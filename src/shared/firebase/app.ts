@@ -1,5 +1,4 @@
 import { getApp, getApps, initializeApp } from 'firebase/app'
-import { getAuth, signInAnonymously } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
 import { firebaseConfig, hasFirebaseConfig } from './config'
@@ -10,18 +9,16 @@ export const firebaseApp = hasFirebaseConfig
     : initializeApp(firebaseConfig)
   : null
 
-export const firebaseAuth = firebaseApp ? getAuth(firebaseApp) : null
 export const firebaseDb = firebaseApp ? getFirestore(firebaseApp) : null
 
-export async function ensureAnonymousSession() {
-  if (!firebaseAuth) {
-    return null
+export function explainFirebaseError(error: unknown) {
+  if (!(error instanceof Error)) {
+    return 'Firebase connection failed. Check your Firebase config and console settings.'
   }
 
-  if (firebaseAuth.currentUser) {
-    return firebaseAuth.currentUser
+  if (error.message.includes('permission-denied')) {
+    return 'Firestore denied access (permission-denied). Update your Firestore security rules for this app environment.'
   }
 
-  const credential = await signInAnonymously(firebaseAuth)
-  return credential.user
+  return error.message
 }

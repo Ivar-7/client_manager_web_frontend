@@ -1,7 +1,7 @@
-import { collection, doc, onSnapshot, setDoc, type Unsubscribe, updateDoc } from 'firebase/firestore'
+import { collection, deleteDoc, doc, onSnapshot, setDoc, type Unsubscribe, updateDoc } from 'firebase/firestore'
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 
-import { ensureAnonymousSession, firebaseDb } from '../../../shared/firebase/app'
+import { explainFirebaseError, firebaseDb } from '../../../shared/firebase/app'
 import { hasFirebaseConfig } from '../../../shared/firebase/config'
 import { nowIsoString } from '../../../shared/utils/dates'
 import { sampleWorkspace } from '../data/sampleWorkspace'
@@ -9,13 +9,14 @@ import { WorkspaceContext } from './dashboardWorkspaceContext'
 import type {
   AssetInput,
   AssetRecord,
+  ChecklistTemplateInput,
+  ChecklistTemplateRecord,
   ChecklistItemInput,
   ChecklistItemRecord,
   ClientInput,
   ClientRecord,
   MeetingInput,
   MeetingNoteRecord,
-  StageInput,
   StageRecord,
   UserRecord,
   WorkspaceCollection,
@@ -36,6 +37,7 @@ function cloneWorkspace(workspace: WorkspaceState): WorkspaceState {
     users: [...workspace.users],
     clients: [...workspace.clients],
     stages: [...workspace.stages],
+    checklistTemplates: [...workspace.checklistTemplates],
     checklistItems: [...workspace.checklistItems],
     assetRecords: [...workspace.assetRecords],
     meetingNotes: [...workspace.meetingNotes],
@@ -72,6 +74,7 @@ function emptyWorkspace(): WorkspaceState {
     users: [],
     clients: [],
     stages: [],
+    checklistTemplates: [],
     checklistItems: [],
     assetRecords: [],
     meetingNotes: [],
@@ -135,6 +138,16 @@ export function DashboardWorkspaceProvider({ children }: { children: ReactNode }
     [updateLocalCollection],
   )
 
+  const removeLocalRecord = useCallback(
+    <K extends WorkspaceCollection>(collectionKey: K, recordId: string) => {
+      updateLocalCollection(
+        collectionKey,
+        (items) => items.filter((item) => item.id !== recordId) as WorkspaceState[K],
+      )
+    },
+    [updateLocalCollection],
+  )
+
   useEffect(() => {
     const db = firebaseDb
 
@@ -148,6 +161,7 @@ export function DashboardWorkspaceProvider({ children }: { children: ReactNode }
       'users',
       'clients',
       'stages',
+      'checklistTemplates',
       'checklistItems',
       'assetRecords',
       'meetingNotes',
@@ -162,79 +176,97 @@ export function DashboardWorkspaceProvider({ children }: { children: ReactNode }
 
     let unsubscribers: Unsubscribe[] = []
 
-    void ensureAnonymousSession()
-      .then((authUser) => {
-        if (cancelled) {
-          return
-        }
+    const handleSnapshotError = (caughtError: unknown) => {
+      if (cancelled) {
+        return
+      }
 
-        if (authUser) {
-          const userRecord: UserRecord = {
-            id: authUser.uid,
-            name: authUser.displayName ?? 'Workspace User',
-            email: authUser.email ?? 'anonymous@firebase.local',
-            role: 'manager',
-          }
-          setCurrentUser(userRecord)
-          void setDoc(doc(db, 'users', userRecord.id), userRecord, { merge: true })
-        }
+      setMode('firebase')
+      setError(explainFirebaseError(caughtError))
+      setWorkspace(emptyWorkspace())
+      setCurrentUser(null)
+      setStatus('error')
+    }
 
-        unsubscribers = [
-          onSnapshot(collection(db, 'users'), (snapshot) => {
-            setWorkspace((previous) => ({
-              ...previous,
-              users: mapSnapshot<UserRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
-            }))
-            readyIfComplete()
-          }),
-          onSnapshot(collection(db, 'clients'), (snapshot) => {
-            setWorkspace((previous) => ({
-              ...previous,
-              clients: mapSnapshot<ClientRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
-            }))
-            readyIfComplete()
-          }),
-          onSnapshot(collection(db, 'stages'), (snapshot) => {
-            setWorkspace((previous) => ({
-              ...previous,
-              stages: mapSnapshot<StageRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
-            }))
-            readyIfComplete()
-          }),
-          onSnapshot(collection(db, 'checklistItems'), (snapshot) => {
-            setWorkspace((previous) => ({
-              ...previous,
-              checklistItems: mapSnapshot<ChecklistItemRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
-            }))
-            readyIfComplete()
-          }),
-          onSnapshot(collection(db, 'assetRecords'), (snapshot) => {
-            setWorkspace((previous) => ({
-              ...previous,
-              assetRecords: mapSnapshot<AssetRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
-            }))
-            readyIfComplete()
-          }),
-          onSnapshot(collection(db, 'meetingNotes'), (snapshot) => {
-            setWorkspace((previous) => ({
-              ...previous,
-              meetingNotes: mapSnapshot<MeetingNoteRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
-            }))
-            readyIfComplete()
-          }),
-        ]
-      })
-      .catch((caughtError: unknown) => {
-        if (cancelled) {
-          return
-        }
-
-        setError(caughtError instanceof Error ? caughtError.message : 'Firebase connection failed')
-        setMode('demo')
-        setWorkspace(readStoredWorkspace() ?? cloneWorkspace(sampleWorkspace))
-        setCurrentUser(sampleWorkspace.users[0] ?? null)
-        setStatus('ready')
-      })
+    unsubscribers = [
+      onSnapshot(
+        collection(db, 'users'),
+        (snapshot) => {
+          setWorkspace((previous) => ({
+            ...previous,
+            users: mapSnapshot<UserRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
+          }))
+          readyIfComplete()
+        },
+        handleSnapshotError,
+      ),
+      onSnapshot(
+        collection(db, 'clients'),
+        (snapshot) => {
+          setWorkspace((previous) => ({
+            ...previous,
+            clients: mapSnapshot<ClientRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
+          }))
+          readyIfComplete()
+        },
+        handleSnapshotError,
+      ),
+      onSnapshot(
+        collection(db, 'stages'),
+        (snapshot) => {
+          setWorkspace((previous) => ({
+            ...previous,
+            stages: mapSnapshot<StageRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
+          }))
+          readyIfComplete()
+        },
+        handleSnapshotError,
+      ),
+      onSnapshot(
+        collection(db, 'checklistItems'),
+        (snapshot) => {
+          setWorkspace((previous) => ({
+            ...previous,
+            checklistItems: mapSnapshot<ChecklistItemRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
+          }))
+          readyIfComplete()
+        },
+        handleSnapshotError,
+      ),
+      onSnapshot(
+        collection(db, 'checklistTemplates'),
+        (snapshot) => {
+          setWorkspace((previous) => ({
+            ...previous,
+            checklistTemplates: mapSnapshot<ChecklistTemplateRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
+          }))
+          readyIfComplete()
+        },
+        handleSnapshotError,
+      ),
+      onSnapshot(
+        collection(db, 'assetRecords'),
+        (snapshot) => {
+          setWorkspace((previous) => ({
+            ...previous,
+            assetRecords: mapSnapshot<AssetRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
+          }))
+          readyIfComplete()
+        },
+        handleSnapshotError,
+      ),
+      onSnapshot(
+        collection(db, 'meetingNotes'),
+        (snapshot) => {
+          setWorkspace((previous) => ({
+            ...previous,
+            meetingNotes: mapSnapshot<MeetingNoteRecord>(snapshot.docs as Array<{ id: string; data: () => unknown }>),
+          }))
+          readyIfComplete()
+        },
+        handleSnapshotError,
+      ),
+    ]
 
     return () => {
       cancelled = true
@@ -263,6 +295,7 @@ export function DashboardWorkspaceProvider({ children }: { children: ReactNode }
         createdAt: nowIsoString(),
         updatedAt: nowIsoString(),
         ...input,
+        onboardingStage: input.onboardingStage ?? 'intake',
       }
 
       await syncOrSet('clients', client)
@@ -286,40 +319,119 @@ export function DashboardWorkspaceProvider({ children }: { children: ReactNode }
     [mode, patchLocalRecord],
   )
 
-  const createStage = useCallback(
-    async (input: StageInput) => {
-      const stage: StageRecord = {
+  const createChecklistTemplate = useCallback(
+    async (input: ChecklistTemplateInput) => {
+      const template: ChecklistTemplateRecord = {
         id: createId(),
         createdAt: nowIsoString(),
         updatedAt: nowIsoString(),
         ...input,
       }
 
-      await syncOrSet('stages', stage)
-      return stage
+      await syncOrSet('checklistTemplates', template)
+      return template
     },
     [syncOrSet],
   )
 
-  const updateStageStatus = useCallback(
-    async (stageId: string, statusValue: StageRecord['status'], comment?: string) => {
-      const patch: Partial<StageRecord> = {
-        status: statusValue,
-        updatedAt: nowIsoString(),
-        comment,
-        completedAt: statusValue === 'approved' ? nowIsoString() : null,
-        actionedById: currentUser?.id ?? null,
-      }
+  const updateChecklistTemplate = useCallback(
+    async (templateId: string, patch: Partial<ChecklistTemplateInput>) => {
+      const nextPatch = { ...patch, updatedAt: nowIsoString() }
       const db = firebaseDb
 
       if (!db || mode === 'demo') {
-        patchLocalRecord('stages', stageId, patch)
+        patchLocalRecord('checklistTemplates', templateId, nextPatch)
         return
       }
 
-      await updateDoc(doc(db, 'stages', stageId), patch)
+      await updateDoc(doc(db, 'checklistTemplates', templateId), nextPatch)
     },
-    [currentUser?.id, mode, patchLocalRecord],
+    [mode, patchLocalRecord],
+  )
+
+  const deleteChecklistTemplate = useCallback(
+    async (templateId: string) => {
+      const db = firebaseDb
+      const checklistItemsForTemplate = workspace.checklistItems.filter(
+        (item) => item.templateId === templateId,
+      )
+
+      if (!db || mode === 'demo') {
+        removeLocalRecord('checklistTemplates', templateId)
+        checklistItemsForTemplate.forEach((item) => {
+          removeLocalRecord('checklistItems', item.id)
+        })
+        return
+      }
+
+      await Promise.all([
+        deleteDoc(doc(db, 'checklistTemplates', templateId)),
+        ...checklistItemsForTemplate.map((item) => deleteDoc(doc(db, 'checklistItems', item.id))),
+      ])
+    },
+    [mode, removeLocalRecord, workspace.checklistItems],
+  )
+
+  const initializeClientChecklist = useCallback(
+    async (clientId: string, includeTemplate?: ChecklistTemplateRecord) => {
+      const combinedTemplates = includeTemplate
+        ? [
+            ...workspace.checklistTemplates.filter((template) => template.id !== includeTemplate.id),
+            includeTemplate,
+          ]
+        : workspace.checklistTemplates
+
+      const templates = combinedTemplates
+        .filter((template) => template.active)
+        .sort((left, right) => left.order - right.order)
+
+      if (templates.length === 0) {
+        return
+      }
+
+      const db = firebaseDb
+      const existing = new Set(
+        workspace.checklistItems
+          .filter((item) => item.clientId === clientId)
+          .map((item) => item.templateId)
+          .filter(Boolean),
+      )
+
+      const writes: Promise<unknown>[] = []
+
+      templates.forEach((template) => {
+        if (existing.has(template.id)) {
+          return
+        }
+
+        const checklistItem: ChecklistItemRecord = {
+          id: `${clientId}_${template.id}`,
+          clientId,
+          templateId: template.id,
+          label: template.label,
+          order: template.order,
+          completed: false,
+          assignedTo: null,
+          dueDate: null,
+          completedAt: null,
+          meetingId: null,
+          createdAt: nowIsoString(),
+          updatedAt: nowIsoString(),
+        }
+
+        if (!db || mode === 'demo') {
+          appendLocalRecord('checklistItems', checklistItem)
+          return
+        }
+
+        writes.push(setDoc(doc(db, 'checklistItems', checklistItem.id), checklistItem))
+      })
+
+      if (writes.length > 0) {
+        await Promise.all(writes)
+      }
+    },
+    [appendLocalRecord, mode, workspace.checklistItems, workspace.checklistTemplates],
   )
 
   const createChecklistItem = useCallback(
@@ -354,6 +466,20 @@ export function DashboardWorkspaceProvider({ children }: { children: ReactNode }
       await updateDoc(doc(db, 'checklistItems', itemId), patch)
     },
     [mode, patchLocalRecord],
+  )
+
+  const deleteChecklistItem = useCallback(
+    async (itemId: string) => {
+      const db = firebaseDb
+
+      if (!db || mode === 'demo') {
+        removeLocalRecord('checklistItems', itemId)
+        return
+      }
+
+      await deleteDoc(doc(db, 'checklistItems', itemId))
+    },
+    [mode, removeLocalRecord],
   )
 
   const createAssetRecord = useCallback(
@@ -401,6 +527,7 @@ export function DashboardWorkspaceProvider({ children }: { children: ReactNode }
       ['users', sampleWorkspace.users],
       ['clients', sampleWorkspace.clients],
       ['stages', sampleWorkspace.stages],
+      ['checklistTemplates', sampleWorkspace.checklistTemplates],
       ['checklistItems', sampleWorkspace.checklistItems],
       ['assetRecords', sampleWorkspace.assetRecords],
       ['meetingNotes', sampleWorkspace.meetingNotes],
@@ -424,10 +551,13 @@ export function DashboardWorkspaceProvider({ children }: { children: ReactNode }
       workspace,
       createClient,
       updateClient,
-      createStage,
-      updateStageStatus,
+      createChecklistTemplate,
+      updateChecklistTemplate,
+      deleteChecklistTemplate,
+      initializeClientChecklist,
       createChecklistItem,
       toggleChecklistItem,
+      deleteChecklistItem,
       createAssetRecord,
       createMeetingNote,
       seedSampleWorkspace,
@@ -440,10 +570,13 @@ export function DashboardWorkspaceProvider({ children }: { children: ReactNode }
       workspace,
       createClient,
       updateClient,
-      createStage,
-      updateStageStatus,
+      createChecklistTemplate,
+      updateChecklistTemplate,
+      deleteChecklistTemplate,
+      initializeClientChecklist,
       createChecklistItem,
       toggleChecklistItem,
+      deleteChecklistItem,
       createAssetRecord,
       createMeetingNote,
       seedSampleWorkspace,

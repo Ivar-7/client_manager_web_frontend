@@ -3,14 +3,14 @@ import { createContext, useContext } from 'react'
 import type {
   AssetInput,
   AssetRecord,
+  ChecklistTemplateInput,
+  ChecklistTemplateRecord,
   ChecklistItemInput,
   ChecklistItemRecord,
   ClientInput,
   ClientRecord,
   MeetingInput,
   MeetingNoteRecord,
-  StageInput,
-  StageRecord,
   UserRecord,
   WorkspaceState,
 } from '../../../shared/types/domain'
@@ -23,14 +23,19 @@ export interface WorkspaceContextValue {
   workspace: WorkspaceState
   createClient: (input: ClientInput) => Promise<ClientRecord>
   updateClient: (clientId: string, patch: Partial<ClientInput>) => Promise<void>
-  createStage: (input: StageInput) => Promise<StageRecord>
-  updateStageStatus: (
-    stageId: string,
-    status: StageRecord['status'],
-    comment?: string,
+  createChecklistTemplate: (input: ChecklistTemplateInput) => Promise<ChecklistTemplateRecord>
+  updateChecklistTemplate: (
+    templateId: string,
+    patch: Partial<ChecklistTemplateInput>,
+  ) => Promise<void>
+  deleteChecklistTemplate: (templateId: string) => Promise<void>
+  initializeClientChecklist: (
+    clientId: string,
+    includeTemplate?: ChecklistTemplateRecord,
   ) => Promise<void>
   createChecklistItem: (input: ChecklistItemInput) => Promise<ChecklistItemRecord>
   toggleChecklistItem: (itemId: string, completed: boolean) => Promise<void>
+  deleteChecklistItem: (itemId: string) => Promise<void>
   createAssetRecord: (input: AssetInput) => Promise<AssetRecord>
   createMeetingNote: (input: MeetingInput) => Promise<MeetingNoteRecord>
   seedSampleWorkspace: () => Promise<void>

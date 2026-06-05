@@ -1,6 +1,6 @@
 .app-shell {
   min-height: 100svh;
-  width: min(1440px, calc(100vw - 24px));
+  width: min(1600px, calc(100vw - 24px));
   margin: 0 auto;
   padding: 18px 0 28px;
 }
@@ -57,10 +57,59 @@
   color: var(--danger);
 }
 
+.workspace-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.workspace-nav {
+  position: sticky;
+  top: 18px;
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--surface);
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+.workspace-nav__link {
+  text-decoration: none;
+  color: var(--muted);
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  transition: all 150ms ease;
+}
+
+.workspace-nav__link:hover {
+  color: var(--text);
+  background: var(--surface-muted);
+}
+
+.workspace-nav__link--active {
+  color: var(--text);
+  background: rgba(15, 118, 110, 0.12);
+  border-color: rgba(15, 118, 110, 0.28);
+}
+
+.workspace-content {
+  min-width: 0;
+  display: grid;
+  gap: 18px;
+}
+
 .dashboard-shell {
   display: grid;
   grid-template-columns: minmax(280px, 0.9fr) minmax(0, 2.1fr);
   gap: 18px;
+}
+
+.dashboard-shell--single {
+  grid-template-columns: 1fr;
 }
 
 .hero-panel,
@@ -96,10 +145,10 @@
 
 .hero-panel h1 {
   margin: 16px 0 12px;
-  font-size: clamp(2.4rem, 5vw, 4.25rem);
-  line-height: 0.96;
-  letter-spacing: -0.05em;
-  max-width: 11ch;
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  max-width: 16ch;
 }
 
 .hero-panel p {
@@ -145,6 +194,10 @@
   align-content: start;
 }
 
+.dashboard-grid--overview {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .detail-column,
 .section-grid {
   display: grid;
@@ -152,6 +205,10 @@
 }
 
 .section-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.section-grid--page {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
@@ -504,6 +561,16 @@
 }
 
 @media (max-width: 1120px) {
+  .workspace-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace-nav {
+    position: static;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    overflow-x: auto;
+  }
+
   .dashboard-shell {
     grid-template-columns: 1fr;
   }
@@ -521,6 +588,15 @@
   .app-shell {
     width: min(100vw, calc(100vw - 12px));
     padding-top: 8px;
+  }
+
+  .workspace-nav {
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+
+  .dashboard-grid--overview {
+    grid-template-columns: 1fr;
   }
 
   .app-shell__topbar,

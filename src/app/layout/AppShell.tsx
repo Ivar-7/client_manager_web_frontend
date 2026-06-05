@@ -4,7 +4,7 @@ import { Badge } from '../../shared/components/UI'
 import { useDashboardWorkspace } from '../../features/dashboard/providers/dashboardWorkspaceContext'
 
 export default function AppShell() {
-  const { mode, status, error, currentUser } = useDashboardWorkspace()
+  const { status, error, currentUser } = useDashboardWorkspace()
 
   return (
     <div className="app-shell">
@@ -14,7 +14,7 @@ export default function AppShell() {
           <strong>Firebase-backed dashboard</strong>
         </div>
         <div className="app-shell__topbar-actions">
-          <Badge tone={mode === 'firebase' ? 'positive' : 'warning'}>{mode}</Badge>
+          {/* <Badge tone={mode === 'firebase' ? 'positive' : 'warning'}>{mode}</Badge> */}
           <Badge tone={status === 'error' ? 'danger' : 'neutral'}>{status}</Badge>
           <span className="app-shell__user">{currentUser?.name ?? 'Workspace user'}</span>
         </div>

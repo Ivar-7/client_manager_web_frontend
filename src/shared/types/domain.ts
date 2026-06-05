@@ -1,6 +1,7 @@
 export type UserRole = 'admin' | 'manager' | 'member'
 export type ClientStatus = 'onboarding' | 'active' | 'inactive'
 export type StageStatus = 'pending' | 'inProgress' | 'blocked' | 'approved' | 'rejected'
+export type OnboardingStage = 'intake' | 'accountSetup' | 'contentCollection' | 'review' | 'goLive'
 export type AssetType = 'domain' | 'hosting' | 'dns'
 export type AssetStatus = 'active' | 'pending' | 'expired' | 'suspended'
 
@@ -23,6 +24,7 @@ export interface ClientRecord extends BaseEntity {
   phone: string
   website: string
   status: ClientStatus
+  onboardingStage: OnboardingStage
   ownerId?: string | null
 }
 
@@ -37,8 +39,18 @@ export interface StageRecord extends BaseEntity {
   comment?: string
 }
 
+export interface ChecklistTemplateRecord extends BaseEntity {
+  label: string
+  description: string
+  order: number
+  required: boolean
+  active: boolean
+}
+
 export interface ChecklistItemRecord extends BaseEntity {
-  stageId: string
+  clientId: string
+  templateId?: string | null
+  stageId?: string
   meetingId?: string | null
   label: string
   order: number
@@ -70,6 +82,7 @@ export interface WorkspaceState {
   users: UserRecord[]
   clients: ClientRecord[]
   stages: StageRecord[]
+  checklistTemplates: ChecklistTemplateRecord[]
   checklistItems: ChecklistItemRecord[]
   assetRecords: AssetRecord[]
   meetingNotes: MeetingNoteRecord[]
@@ -79,6 +92,7 @@ export type WorkspaceCollection = keyof WorkspaceState
 
 export type ClientInput = Omit<ClientRecord, 'id' | 'createdAt' | 'updatedAt'>
 export type StageInput = Omit<StageRecord, 'id' | 'createdAt' | 'updatedAt'>
+export type ChecklistTemplateInput = Omit<ChecklistTemplateRecord, 'id' | 'createdAt' | 'updatedAt'>
 export type ChecklistItemInput = Omit<ChecklistItemRecord, 'id' | 'createdAt' | 'updatedAt'>
 export type AssetInput = Omit<AssetRecord, 'id' | 'createdAt' | 'updatedAt'>
 export type MeetingInput = Omit<MeetingNoteRecord, 'id' | 'createdAt' | 'updatedAt'>

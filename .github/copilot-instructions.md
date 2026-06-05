@@ -6,7 +6,7 @@
 - `src/features/<feature>/` — `api`, `services`, `hooks`, `components`, `pages`, `types`.
 - Root: `App.tsx`, `main.tsx`, `routes.tsx`.
 
-- Lean, Layered and DRY code.
+- Modular, Layered and DRY code.
 
 ---
 
