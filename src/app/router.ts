@@ -3,6 +3,8 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 
 import AppShell from './layout/AppShell'
 
+const Login = lazy(() => import('../features/auth/pages/Login'))
+const Signup = lazy(() => import('../features/auth/pages/Signup'))
 const DashboardLayout = lazy(() => import('../features/dashboard/layout/DashboardLayout'))
 const OverviewPage = lazy(() => import('../features/dashboard/pages/OverviewPage'))
 const ClientsPage = lazy(() => import('../features/dashboard/pages/ClientsPage'))
@@ -20,6 +22,14 @@ export const router = createBrowserRouter([
           {
             path: '/',
             element: createElement(Navigate, { to: '/overview', replace: true }),
+          },
+          {
+            path: '/login',
+            element: createElement(Login),
+          },
+          {
+            path: '/signup',
+            element: createElement(Signup),
           },
           {
             path: '/overview',
