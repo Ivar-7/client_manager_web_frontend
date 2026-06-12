@@ -21,6 +21,13 @@ export default function Login() {
   };
 
   return (
-    <LoginForm email={email} setEmail={setEmail} password={password} setPassword={setPassword} error={error} handleSubmit={handleSubmit} />
+    <LoginForm
+      email={email}
+      setEmail={setEmail}
+      password={password}
+      setPassword={setPassword}
+      error={error}
+      handleSubmit={handleSubmit}
+    />
   );
 }
