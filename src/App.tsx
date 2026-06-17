@@ -2,11 +2,17 @@ import { Suspense } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
 import { router } from './app/router'
-import { LoadingState } from './shared/components/UI'
+import { LoadingState } from './shared/components/States'
 
 export default function App() {
   return (
-    <Suspense fallback={<LoadingState title="Booting dashboard" description="Preparing route bundles and workspace providers." />}>
+    <Suspense
+      fallback={
+        <div className="flex min-h-[100svh] items-center justify-center p-6">
+          <LoadingState title="Booting workspace" description="Preparing route bundles." />
+        </div>
+      }
+    >
       <RouterProvider router={router} />
     </Suspense>
   )

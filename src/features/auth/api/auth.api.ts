@@ -1,32 +1,32 @@
-import {signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut} from 'firebase/auth';
-import {firebaseApp} from '../../../shared/firebase/app.ts';
-import {getAuth} from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from 'firebase/auth'
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
 
-const auth = getAuth(firebaseApp!);
+import { auth, db } from '../../../shared/api/firebaseClient'
+import { initialsFromName } from '../../../shared/api/users.api'
 
 export async function signIn(email: string, password: string) {
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-        console.error('Error signing in:', error);
-        throw error;
-    }
+  await signInWithEmailAndPassword(auth, email, password)
 }
 
-export async function signUp(email: string, password: string) {
-    try {
-        await createUserWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-        console.error('Error signing up:', error);
-        throw error;
-    }
+export async function signUp(name: string, email: string, password: string) {
+  const credential = await createUserWithEmailAndPassword(auth, email, password)
+  await updateProfile(credential.user, { displayName: name })
+
+  await setDoc(doc(db, 'users', credential.user.uid), {
+    name,
+    email,
+    role: 'member',
+    avatarInitials: initialsFromName(name),
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  })
 }
 
 export async function signOutUser() {
-    try {
-        await signOut(auth);
-    } catch (error) {
-        console.error('Error signing out:', error);
-        throw error;
-    }
+  await signOut(auth)
 }
