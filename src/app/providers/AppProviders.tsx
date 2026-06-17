@@ -1,7 +1,15 @@
 import type { ReactNode } from 'react'
 
-import { DashboardWorkspaceProvider } from '../../features/dashboard/providers/DashboardWorkspaceProvider'
+import { AuthProvider } from './AuthProvider'
+import { ThemeProvider } from './ThemeProvider'
+import { ErrorBoundary } from './ErrorBoundary'
 
 export default function AppProviders({ children }: { children: ReactNode }) {
-  return <DashboardWorkspaceProvider>{children}</DashboardWorkspaceProvider>
+  return (
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>{children}</AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
+  )
 }

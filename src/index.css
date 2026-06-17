@@ -1,54 +1,58 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-bg: #f4efe8;
+  --color-surface: #ffffff;
+  --color-surface-strong: #ffffff;
+  --color-surface-muted: #f8f5f0;
+  --color-text: #1f2430;
+  --color-muted: #667083;
+  --color-border: #e3ddd1;
+  --color-border-strong: #cfc7b8;
+  --color-accent: #0f766e;
+  --color-accent-strong: #134e4a;
+  --color-accent-soft: #e3f3f1;
+  --color-success: #15803d;
+  --color-success-soft: #e6f4ea;
+  --color-warning: #b45309;
+  --color-warning-soft: #fdf1e1;
+  --color-danger: #b42318;
+  --color-danger-soft: #fbe8e6;
+
+  --font-heading: 'Segoe UI Variable Display', 'Avenir Next', 'Trebuchet MS', sans-serif;
+  --font-body: 'Segoe UI Variable Text', 'Avenir Next', 'Trebuchet MS', sans-serif;
+  --font-mono: 'Cascadia Mono', 'SFMono-Regular', Consolas, monospace;
+}
+
+.dark {
+  --color-bg: #0b1020;
+  --color-surface: #111827;
+  --color-surface-strong: #151e30;
+  --color-surface-muted: #0f1729;
+  --color-text: #eef2ff;
+  --color-muted: #9ca3af;
+  --color-border: #232c41;
+  --color-border-strong: #2d3a55;
+  --color-accent: #2dd4bf;
+  --color-accent-strong: #99f6e4;
+  --color-accent-soft: #0f2a28;
+  --color-success: #4ade80;
+  --color-success-soft: #0f2a1c;
+  --color-warning: #fbbf24;
+  --color-warning-soft: #2a1f0c;
+  --color-danger: #f87171;
+  --color-danger-soft: #2a1212;
+}
 
 :root {
   color-scheme: light dark;
-  --bg: #f4efe8;
-  --bg-elevated: rgba(255, 255, 255, 0.7);
-  --surface: rgba(255, 255, 255, 0.84);
-  --surface-strong: #ffffff;
-  --surface-muted: rgba(255, 255, 255, 0.56);
-  --text: #1f2430;
-  --muted: #667083;
-  --border: rgba(31, 36, 48, 0.12);
-  --border-strong: rgba(31, 36, 48, 0.2);
-  --shadow: 0 28px 70px rgba(20, 26, 40, 0.12);
-  --accent: #0f766e;
-  --accent-strong: #134e4a;
-  --accent-soft: rgba(15, 118, 110, 0.12);
-  --success: #15803d;
-  --warning: #b45309;
-  --danger: #b42318;
-  --hero: linear-gradient(135deg, rgba(15, 118, 110, 0.96), rgba(20, 184, 166, 0.8) 46%, rgba(245, 158, 11, 0.78));
-  --mono: 'Cascadia Mono', 'SFMono-Regular', Consolas, monospace;
-  --heading: 'Segoe UI Variable Display', 'Avenir Next', 'Trebuchet MS', sans-serif;
-  --body: 'Segoe UI Variable Text', 'Avenir Next', 'Trebuchet MS', sans-serif;
-  font: 17px/1.5 var(--body);
+  font: 17px/1.5 var(--font-body);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0b1020;
-    --bg-elevated: rgba(7, 10, 20, 0.72);
-    --surface: rgba(13, 18, 32, 0.84);
-    --surface-strong: #111827;
-    --surface-muted: rgba(17, 24, 39, 0.66);
-    --text: #eef2ff;
-    --muted: #9ca3af;
-    --border: rgba(255, 255, 255, 0.09);
-    --border-strong: rgba(255, 255, 255, 0.16);
-    --shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
-    --accent: #2dd4bf;
-    --accent-strong: #99f6e4;
-    --accent-soft: rgba(45, 212, 191, 0.14);
-    --success: #4ade80;
-    --warning: #fbbf24;
-    --danger: #f87171;
-    --hero: linear-gradient(135deg, rgba(10, 78, 73, 0.96), rgba(13, 148, 136, 0.78) 46%, rgba(180, 83, 9, 0.7));
-  }
 }
 
 * {
@@ -57,28 +61,14 @@
 
 html {
   min-height: 100%;
-  background:
-    radial-gradient(circle at top left, rgba(15, 118, 110, 0.18), transparent 36%),
-    radial-gradient(circle at right center, rgba(245, 158, 11, 0.15), transparent 28%),
-    var(--bg);
+  background: var(--color-bg);
 }
 
 body {
   margin: 0;
-  min-width: 320px;
+  min-width: 360px;
   background: transparent;
-  color: var(--text);
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 36px 36px;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent 92%);
+  color: var(--color-text);
 }
 
 a {
@@ -107,22 +97,11 @@ svg {
 
 h1,
 h2,
-h3,
-strong {
-  color: var(--text);
-}
-
-h1,
-h2,
 h3 {
-  font-family: var(--heading);
+  font-family: var(--font-heading);
   margin: 0;
 }
 
 p {
   margin: 0;
-}
-
-.muted {
-  color: var(--muted);
 }

@@ -1,6 +1,7 @@
 # React + Vite + TypeScript — Agentic Rules
 
 ## Architecture
+
 - `src/app/`
 - `src/shared/` — `api`, `components`, `hooks`, `theme`, `types`, `utils`, `store`, `providers`.
 - `src/features/<feature>/` — `api`, `services`, `hooks`, `components`, `pages`, `types`.
@@ -11,6 +12,7 @@
 ---
 
 ## Core Rules
+
 - `src/shared/api/` — HTTP client, auth interceptors, error normalisation.
 - Naming: `*.types.ts`, `*.schema.ts`, `*Provider.tsx`, `*Page.tsx`, `use<Feature>.ts`.
 - Object-based React Router. Route-level lazy loading.
@@ -22,6 +24,7 @@
 ---
 
 ## UI/UX
+
 - Design tokens only — CSS variables or Tailwind. No one-off values.
 - Light and dark theme support.
 - Framer Motion for purposeful motion only.
@@ -31,10 +34,12 @@
 ---
 
 ## After Every Change
+
 ```bash
 npm run format
 npm run lint
 npm run typecheck
 npm run build
 ```
+
 Fix all errors before marking complete.
