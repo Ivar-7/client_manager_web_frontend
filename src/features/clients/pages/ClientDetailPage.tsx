@@ -32,7 +32,7 @@ export default function ClientDetailPage() {
   )
 
   if (status === 'loading') {
-    return <LoadingState title="Loading client" description="Fetching client details." />
+    return <LoadingState title="" description="" />
   }
 
   if (status === 'error') {

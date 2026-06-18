@@ -145,7 +145,10 @@ export async function toggleChecklistItem(
   })
 }
 
-export async function updateChecklistItem(itemId: string, patch: Partial<ChecklistItemInput>) {
+export async function updateChecklistItem(
+  itemId: string,
+  patch: Partial<Omit<ChecklistItemInput, 'dueDate'>> & { dueDate?: Date | null },
+) {
   const payload: Record<string, unknown> = { ...patch, updatedAt: serverTimestamp() }
   if (patch.dueDate instanceof Date) {
     payload.dueDate = Timestamp.fromDate(patch.dueDate)

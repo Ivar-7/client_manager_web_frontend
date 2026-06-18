@@ -45,7 +45,7 @@ export default function InfrastructurePage() {
       </Card>
 
       {status === 'loading' ? (
-        <LoadingState title="Loading infrastructure" description="Fetching asset records." />
+        <LoadingState title="" description="" />
       ) : status === 'error' ? (
         <ErrorState
           title="Couldn't load infrastructure"

@@ -9,7 +9,7 @@ export default function AppShell() {
       <Suspense
         fallback={
           <div className="flex min-h-[100svh] items-center justify-center p-6">
-            <LoadingState title="Loading" description="Preparing this page." />
+            <LoadingState title="" description="" />
           </div>
         }
       >

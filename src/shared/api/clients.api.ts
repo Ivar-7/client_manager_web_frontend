@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   documentId,
   getDocs,
@@ -245,12 +246,84 @@ export async function createClientWithOnboarding(
   return clientRef.id
 }
 
-export async function getClientMemberClientIds(uid: string): Promise<string[]> {
-  const snapshot = await getDocs(
-    query(collection(db, 'checklistItems'), where('assignedTo', '==', uid)),
+const CHILD_COLLECTIONS = ['stages', 'checklistItems', 'assetRecords', 'meetingNotes']
+
+/**
+ * Deletes the client and every stage/checklist item/asset/meeting note tied
+ * to it. The activity log is append-only and is intentionally left intact.
+ */
+export async function deleteClient(clientId: string, actorId: string, actorName: string, clientName: string) {
+  for (const collectionName of CHILD_COLLECTIONS) {
+    const snapshot = await getDocs(query(collection(db, collectionName), where('clientId', '==', clientId)))
+    const docs = snapshot.docs
+    for (let i = 0; i < docs.length; i += 450) {
+      const batch = writeBatch(db)
+      docs.slice(i, i + 450).forEach((document) => batch.delete(document.ref))
+      await batch.commit()
+    }
+  }
+
+  await deleteDoc(doc(db, COLLECTION, clientId))
+
+  logActivity({
+    clientId,
+    actorId,
+    actorName,
+    action: `deleted client "${clientName}"`,
+    entityType: 'client',
+    entityId: clientId,
+  })
+}
+
+/**
+ * One-click "assign this client to a member": sets them as owner and bulk-assigns
+ * any currently-unassigned checklist items to them, across every stage. Items
+ * already assigned to someone else are left alone.
+ */
+export async function assignClientToMember(
+  clientId: string,
+  clientName: string,
+  userId: string,
+  actorId: string,
+  actorName: string,
+) {
+  const unassignedSnapshot = await getDocs(
+    query(
+      collection(db, 'checklistItems'),
+      where('clientId', '==', clientId),
+      where('assignedTo', '==', null),
+    ),
   )
-  const clientIds = snapshot.docs.map((document) => document.data().clientId as string | undefined)
-  return Array.from(new Set(clientIds.filter((clientId): clientId is string => Boolean(clientId))))
+
+  const batch = writeBatch(db)
+  batch.update(doc(db, COLLECTION, clientId), { ownerId: userId, updatedAt: serverTimestamp() })
+  unassignedSnapshot.docs.forEach((document) => {
+    batch.update(document.ref, { assignedTo: userId, updatedAt: serverTimestamp() })
+  })
+  await batch.commit()
+
+  logActivity({
+    clientId,
+    actorId,
+    actorName,
+    action: `assigned client "${clientName}" to a team member`,
+    entityType: 'client',
+    entityId: clientId,
+  })
+}
+
+export async function getClientMemberClientIds(uid: string): Promise<string[]> {
+  const [checklistSnapshot, ownedSnapshot] = await Promise.all([
+    getDocs(query(collection(db, 'checklistItems'), where('assignedTo', '==', uid))),
+    getDocs(query(collection(db, COLLECTION), where('ownerId', '==', uid))),
+  ])
+  const checklistClientIds = checklistSnapshot.docs.map(
+    (document) => document.data().clientId as string | undefined,
+  )
+  const ownedClientIds = ownedSnapshot.docs.map((document) => document.id)
+  return Array.from(
+    new Set([...checklistClientIds, ...ownedClientIds].filter((id): id is string => Boolean(id))),
+  )
 }
 
 /**

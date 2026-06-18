@@ -23,7 +23,7 @@ function WorkflowAdminView() {
   const { templates, status } = useChecklistTemplates()
 
   if (status === 'loading') {
-    return <LoadingState title="Loading templates" description="Fetching checklist templates." />
+    return <LoadingState title="" description="" />
   }
 
   return (

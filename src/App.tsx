@@ -9,7 +9,7 @@ export default function App() {
     <Suspense
       fallback={
         <div className="flex min-h-[100svh] items-center justify-center p-6">
-          <LoadingState title="Booting workspace" description="Preparing route bundles." />
+          <LoadingState title="" description="Uno momento" />
         </div>
       }
     >

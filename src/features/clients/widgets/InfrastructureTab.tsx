@@ -51,7 +51,7 @@ export function InfrastructureTab({ clientId }: InfrastructureTabProps) {
       ) : null}
 
       {status === 'loading' ? (
-        <LoadingState title="Loading infrastructure" description="Fetching this client's assets." />
+        <LoadingState title="" description="" />
       ) : items.length === 0 ? (
         <EmptyState
           title="No assets yet"

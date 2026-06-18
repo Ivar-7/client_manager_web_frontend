@@ -51,7 +51,7 @@ export default function TasksPage() {
       </Card>
 
       {status === 'loading' ? (
-        <LoadingState title="Loading tasks" description="Fetching checklist items." />
+        <LoadingState title="" description="" />
       ) : status === 'error' ? (
         <ErrorState title="Couldn't load tasks" description={error ?? 'Please try again.'} />
       ) : status === 'empty' ? (

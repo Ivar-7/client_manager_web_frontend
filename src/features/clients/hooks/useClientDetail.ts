@@ -10,7 +10,8 @@ export function useClientDetail(clientId: string) {
   const { items: checklistItems, status: checklistStatus } = useClientChecklistItems(clientId)
 
   const hasAssignedItem = checklistItems.some((item) => item.assignedTo === firebaseUser?.uid)
-  const hasAccess = isAdmin || hasAssignedItem
+  const isOwner = Boolean(client && firebaseUser && client.ownerId === firebaseUser.uid)
+  const hasAccess = isAdmin || hasAssignedItem || isOwner
 
   const visibleChecklistItems = isAdmin
     ? checklistItems

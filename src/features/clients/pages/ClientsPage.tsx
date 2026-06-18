@@ -79,7 +79,7 @@ export default function ClientsPage() {
       ) : null}
 
       {status === 'loading' ? (
-        <LoadingState title="Loading clients" description="Fetching the current page of clients." />
+        <LoadingState title="" description="" />
       ) : status === 'error' ? (
         <ErrorState title="Couldn't load clients" description={error ?? 'Please try again.'} />
       ) : status === 'empty' ? (

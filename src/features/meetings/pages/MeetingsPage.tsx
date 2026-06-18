@@ -38,7 +38,7 @@ export default function MeetingsPage() {
       </Card>
 
       {status === 'loading' ? (
-        <LoadingState title="Loading meetings" description="Fetching meeting notes." />
+        <LoadingState title="" description="" />
       ) : status === 'error' ? (
         <ErrorState title="Couldn't load meetings" description={error ?? 'Please try again.'} />
       ) : status === 'empty' ? (

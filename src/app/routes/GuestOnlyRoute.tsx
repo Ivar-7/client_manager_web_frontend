@@ -9,7 +9,7 @@ export function GuestOnlyRoute() {
   if (status === 'loading') {
     return (
       <div className="flex min-h-[100svh] items-center justify-center p-6">
-        <LoadingState title="Loading" description="One moment." />
+        <LoadingState title="" description="" />
       </div>
     )
   }

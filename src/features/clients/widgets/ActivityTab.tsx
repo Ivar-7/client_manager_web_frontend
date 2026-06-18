@@ -9,7 +9,7 @@ export function ActivityTab({ clientId }: { clientId: string }) {
 
   if (status === 'loading') {
     return (
-      <LoadingState title="Loading activity" description="Fetching this client's activity log." />
+      <LoadingState title="" description="" />
     )
   }
 

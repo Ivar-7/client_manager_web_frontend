@@ -9,7 +9,7 @@ export function ProtectedRoute() {
   if (status === 'loading') {
     return (
       <div className="flex min-h-[100svh] items-center justify-center p-6">
-        <LoadingState title="Checking session" description="Confirming your sign-in status." />
+        <LoadingState title="" description="" />
       </div>
     )
   }

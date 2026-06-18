@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 
 import { useAuth } from '../providers/useAuth'
 import { useTheme } from '../providers/useTheme'
@@ -93,12 +93,61 @@ const NAV_ITEMS = [
 ]
 
 export default function DashboardLayout() {
-  const { profile } = useAuth()
+  const { profile, isAdmin } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const userMenuRef = useRef<HTMLDivElement>(null)
+  const location = useLocation()
+
+  // ── Close user menu on outside click ──────────────────────────────
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false)
+      }
+    }
+    if (userMenuOpen) document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [userMenuOpen])
+
+  // ── Close user menu on route change ───────────────────────────────
+  useEffect(() => {
+    setUserMenuOpen(false)
+  }, [location.pathname])
+
+  // ── Page transition progress bar ──────────────────────────────────
+  const [progress, setProgress] = useState(0)
+  const [visible, setVisible] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    setVisible(true)
+    setProgress(20)
+    timerRef.current = setTimeout(() => setProgress(60), 80)
+    const done = setTimeout(() => {
+      setProgress(100)
+      setTimeout(() => setVisible(false), 300)
+    }, 350)
+    return () => {
+      clearTimeout(done)
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [location.pathname])
+
+  const roleLabel = isAdmin ? 'Admin' : 'Member'
 
   return (
     <div className="flex min-h-[100svh] bg-bg">
+      {/* Top progress bar */}
+      {visible && (
+        <div className="fixed inset-x-0 top-0 z-50 h-0.5">
+          <div
+            className="h-full bg-accent transition-all duration-300 ease-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      )}
       {/* Sidebar — desktop */}
       <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-surface lg:flex">
         {/* Logo */}
@@ -146,41 +195,86 @@ export default function DashboardLayout() {
         </nav>
 
         {/* User footer */}
-        <div className="border-t border-border p-3">
-          <div className="flex items-center gap-3 rounded-xl px-3 py-2.5">
-            {profile ? (
-              <>
-                <AvatarInitials initials={profile.avatarInitials} size="sm" />
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-xs font-semibold text-text">{profile.name}</p>
-                  <p className="text-[10px] text-muted">Member</p>
-                </div>
-              </>
-            ) : null}
-          </div>
-          <div className="mt-1 flex gap-1">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-muted transition-colors hover:bg-surface-strong hover:text-text"
+        <div ref={userMenuRef} className="relative border-t border-border p-3">
+
+          {/* Popover — floats upward */}
+          {userMenuOpen && (
+            <div className="absolute bottom-full left-3 right-3 mb-2 overflow-hidden rounded-xl border border-border bg-surface shadow-xl shadow-black/20">
+              {/* User info header */}
+              <div className="border-b border-border px-4 py-3">
+                <p className="text-xs font-semibold text-text">{profile?.name}</p>
+                <p className="text-[11px] text-muted">{profile?.email ?? ''}</p>
+              </div>
+
+              {/* Theme toggle */}
+              <button
+                type="button"
+                onClick={() => { toggleTheme(); setUserMenuOpen(false) }}
+                className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-text transition-colors hover:bg-surface-strong"
+              >
+                {theme === 'dark' ? (
+                  <svg viewBox="0 0 20 20" fill="currentColor" className="size-4 shrink-0 text-muted">
+                    <path d="M10 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm4 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-.464 4.95.707.707a1 1 0 0 0 1.414-1.414l-.707-.707a1 1 0 0 0-1.414 1.414Zm2.12-10.607a1 1 0 0 1 0 1.414l-.706.707a1 1 0 1 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0ZM17 11a1 1 0 1 0 0-2h-1a1 1 0 1 0 0 2h1Zm-7 4a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM5.05 6.464A1 1 0 1 0 6.465 5.05l-.708-.707a1 1 0 0 0-1.414 1.414l.707.707Zm1.414 8.486-.707.707a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 1.414ZM4 11a1 1 0 1 0 0-2H3a1 1 0 1 0 0 2h1Z" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 20 20" fill="currentColor" className="size-4 shrink-0 text-muted">
+                    <path fillRule="evenodd" d="M7.455 2.004a.75.75 0 0 1 .26.77 7 7 0 0 0 9.958 7.967.75.75 0 0 1 1.067.853A8.5 8.5 0 1 1 6.647 1.921a.75.75 0 0 1 .808.083Z" clipRule="evenodd" />
+                  </svg>
+                )}
+                <span className="flex-1 text-left">{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+                {/* Toggle pill */}
+                <span className={`flex h-5 w-9 items-center rounded-full px-0.5 transition-colors ${
+                  theme === 'dark' ? 'bg-accent' : 'bg-border-strong'
+                }`}>
+                  <span className={`size-4 rounded-full bg-white shadow transition-transform ${
+                    theme === 'dark' ? 'translate-x-4' : 'translate-x-0'
+                  }`} />
+                </span>
+              </button>
+
+              <div className="border-t border-border" />
+
+              {/* Sign out */}
+              <button
+                type="button"
+                onClick={() => signOutUser()}
+                className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-danger transition-colors hover:bg-danger-soft"
+              >
+                <svg viewBox="0 0 20 20" fill="currentColor" className="size-4 shrink-0">
+                  <path fillRule="evenodd" d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Zm13.03 4.97a.75.75 0 0 1 0 1.06l-1.5 1.5a.75.75 0 1 1-1.06-1.06l.22-.22H8.5a.75.75 0 0 1 0-1.5h5.19l-.22-.22a.75.75 0 1 1 1.06-1.06l1.5 1.5Z" clipRule="evenodd" />
+                </svg>
+                Sign out
+              </button>
+            </div>
+          )}
+
+          {/* Clickable user row */}
+          <button
+            type="button"
+            onClick={() => setUserMenuOpen((o) => !o)}
+            className={`flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 transition-colors ${
+              userMenuOpen ? 'bg-surface-strong' : 'hover:bg-surface-strong'
+            }`}
+          >
+            <AvatarInitials initials={profile?.avatarInitials ?? '??'} size="sm" />
+            <div className="min-w-0 flex-1 text-left">
+              <p className="truncate text-xs font-semibold text-text">{profile?.name ?? 'Loading…'}</p>
+              <span className={`inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                isAdmin ? 'bg-accent/10 text-accent' : 'bg-surface-strong text-muted'
+              }`}>
+                {roleLabel}
+              </span>
+            </div>
+            <svg
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className={`size-3.5 shrink-0 text-muted transition-transform ${
+                userMenuOpen ? 'rotate-180' : ''
+              }`}
             >
-              {theme === 'dark' ? (
-                <svg viewBox="0 0 20 20" fill="currentColor" className="size-3.5"><path d="M10 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm4 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-.464 4.95.707.707a1 1 0 0 0 1.414-1.414l-.707-.707a1 1 0 0 0-1.414 1.414Zm2.12-10.607a1 1 0 0 1 0 1.414l-.706.707a1 1 0 1 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0ZM17 11a1 1 0 1 0 0-2h-1a1 1 0 1 0 0 2h1Zm-7 4a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM5.05 6.464A1 1 0 1 0 6.465 5.05l-.708-.707a1 1 0 0 0-1.414 1.414l.707.707Zm1.414 8.486-.707.707a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 1.414ZM4 11a1 1 0 1 0 0-2H3a1 1 0 1 0 0 2h1Z" /></svg>
-              ) : (
-                <svg viewBox="0 0 20 20" fill="currentColor" className="size-3.5"><path fillRule="evenodd" d="M7.455 2.004a.75.75 0 0 1 .26.77 7 7 0 0 0 9.958 7.967.75.75 0 0 1 1.067.853A8.5 8.5 0 1 1 6.647 1.921a.75.75 0 0 1 .808.083Z" clipRule="evenodd" /></svg>
-              )}
-              {theme === 'dark' ? 'Light' : 'Dark'}
-            </button>
-            <button
-              type="button"
-              onClick={() => signOutUser()}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-muted transition-colors hover:bg-danger-soft hover:text-danger"
-            >
-              <svg viewBox="0 0 20 20" fill="currentColor" className="size-3.5"><path fillRule="evenodd" d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Zm13.03 4.97a.75.75 0 0 1 0 1.06l-1.5 1.5a.75.75 0 1 1-1.06-1.06l.22-.22H8.5a.75.75 0 0 1 0-1.5h5.19l-.22-.22a.75.75 0 1 1 1.06-1.06l1.5 1.5Z" clipRule="evenodd" /></svg>
-              Sign out
-            </button>
-          </div>
+              <path fillRule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+            </svg>
+          </button>
         </div>
       </aside>
 

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Badge } from '../../../shared/components/Badge'
 import { Button } from '../../../shared/components/Button'
 import { Input, Select, Textarea } from '../../../shared/components/Field'
+import { UserSelect } from '../../../shared/components/UserSelect'
 import { formatDate, toLocalDateInputValue } from '../../../shared/utils/dates'
 import {
   canMoveToInProgress,
@@ -61,7 +62,7 @@ export function StageCard({
   const [addOpen, setAddOpen] = useState(false)
   const [newLabel, setNewLabel] = useState('')
   const [newRequired, setNewRequired] = useState(true)
-  const [newAssignee, setNewAssignee] = useState('')
+  const [newAssignee, setNewAssignee] = useState<string | null>(null)
 
   const stageItems = items.filter((item) => item.stageId === stage.id)
   const outstanding = getOutstandingRequiredItems(items, stage.id)
@@ -92,14 +93,14 @@ export function StageCard({
       completed: false,
       completedAt: null,
       completedBy: null,
-      assignedTo: newAssignee || null,
+      assignedTo: newAssignee,
       dueDate: null,
       priority: 'medium',
       notes: '',
     })
     setNewLabel('')
     setNewRequired(true)
-    setNewAssignee('')
+    setNewAssignee(null)
     setAddOpen(false)
   }
 
@@ -203,6 +204,8 @@ export function StageCard({
                   key={item.id}
                   item={item}
                   readOnly={!isAdmin && item.assignedTo !== currentUserId}
+                  isAdmin={isAdmin}
+                  users={users}
                   onToggle={(completed) =>
                     toggleChecklistItem(item, completed, currentUserId, currentUserName)
                   }
@@ -219,18 +222,9 @@ export function StageCard({
                     onChange={(event) => setNewLabel(event.target.value)}
                     className="min-w-[180px] flex-1"
                   />
-                  <Select
-                    value={newAssignee}
-                    onChange={(event) => setNewAssignee(event.target.value)}
-                    className="w-auto"
-                  >
-                    <option value="">Unassigned</option>
-                    {users.map((user) => (
-                      <option key={user.id} value={user.id}>
-                        {user.name}
-                      </option>
-                    ))}
-                  </Select>
+                  <div className="w-auto min-w-[180px]">
+                    <UserSelect users={users} value={newAssignee} onChange={setNewAssignee} />
+                  </div>
                   <label className="flex items-center gap-1.5 text-xs font-medium text-muted">
                     <input
                       type="checkbox"

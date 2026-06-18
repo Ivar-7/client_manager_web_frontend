@@ -52,8 +52,8 @@ export function MeetingsTab({ clientId, stages }: MeetingsTabProps) {
 
       {status === 'loading' ? (
         <LoadingState
-          title="Loading meeting notes"
-          description="Fetching this client's meetings."
+          title=""
+          description=""
         />
       ) : items.length === 0 ? (
         <EmptyState

@@ -33,7 +33,7 @@ export default function ActivityPage() {
       </Card>
 
       {status === 'loading' ? (
-        <LoadingState title="Loading activity" description="Fetching the activity log." />
+        <LoadingState title="" description="" />
       ) : status === 'error' ? (
         <ErrorState title="Couldn't load activity" description={error ?? 'Please try again.'} />
       ) : items.length === 0 ? (

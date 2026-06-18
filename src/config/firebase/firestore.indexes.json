@@ -59,6 +59,14 @@
         { "fieldPath": "order", "order": "ASCENDING" }
       ]
     },
+    {
+      "collectionGroup": "checklistItems",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "clientId", "order": "ASCENDING" },
+        { "fieldPath": "assignedTo", "order": "ASCENDING" }
+      ]
+    },
 
     {
       "collectionGroup": "stages",
