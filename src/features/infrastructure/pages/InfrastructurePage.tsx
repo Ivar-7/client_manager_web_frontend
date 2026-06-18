@@ -32,6 +32,11 @@ export default function InfrastructurePage() {
 
   return (
     <div className="grid gap-5">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-text">Infrastructure</h1>
+        <p className="mt-1 text-sm text-muted">Domains, hosting, and DNS records across clients</p>
+      </div>
+
       <Card>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <AssetFilterBar filters={filters} onChange={setFilters} />

@@ -1,49 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-bg: #f4efe8;
+  /* Light mode */
+  --color-bg: #f0f2f7;
   --color-surface: #ffffff;
-  --color-surface-strong: #ffffff;
-  --color-surface-muted: #f8f5f0;
-  --color-text: #1f2430;
-  --color-muted: #667083;
-  --color-border: #e3ddd1;
-  --color-border-strong: #cfc7b8;
-  --color-accent: #0f766e;
-  --color-accent-strong: #134e4a;
-  --color-accent-soft: #e3f3f1;
-  --color-success: #15803d;
-  --color-success-soft: #e6f4ea;
-  --color-warning: #b45309;
-  --color-warning-soft: #fdf1e1;
-  --color-danger: #b42318;
-  --color-danger-soft: #fbe8e6;
+  --color-surface-strong: #f7f8fc;
+  --color-surface-muted: #eef0f6;
+  --color-text: #0d1117;
+  --color-muted: #5a6478;
+  --color-border: #dde1ec;
+  --color-border-strong: #c8cedd;
+  --color-accent: #6366f1;
+  --color-accent-strong: #4338ca;
+  --color-accent-soft: #eef2ff;
+  --color-success: #059669;
+  --color-success-soft: #ecfdf5;
+  --color-warning: #d97706;
+  --color-warning-soft: #fffbeb;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fef2f2;
 
-  --font-heading: 'Segoe UI Variable Display', 'Avenir Next', 'Trebuchet MS', sans-serif;
-  --font-body: 'Segoe UI Variable Text', 'Avenir Next', 'Trebuchet MS', sans-serif;
-  --font-mono: 'Cascadia Mono', 'SFMono-Regular', Consolas, monospace;
+  --font-heading: 'Inter', 'Segoe UI Variable Display', 'Avenir Next', sans-serif;
+  --font-body: 'Inter', 'Segoe UI Variable Text', 'Avenir Next', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Mono', 'SFMono-Regular', Consolas, monospace;
 }
 
 .dark {
-  --color-bg: #0b1020;
-  --color-surface: #111827;
-  --color-surface-strong: #151e30;
-  --color-surface-muted: #0f1729;
-  --color-text: #eef2ff;
-  --color-muted: #9ca3af;
-  --color-border: #232c41;
-  --color-border-strong: #2d3a55;
-  --color-accent: #2dd4bf;
-  --color-accent-strong: #99f6e4;
-  --color-accent-soft: #0f2a28;
-  --color-success: #4ade80;
-  --color-success-soft: #0f2a1c;
+  --color-bg: #080c14;
+  --color-surface: #0e1420;
+  --color-surface-strong: #131a28;
+  --color-surface-muted: #0a0f1a;
+  --color-text: #e8edf8;
+  --color-muted: #7a8499;
+  --color-border: #1e2840;
+  --color-border-strong: #273352;
+  --color-accent: #818cf8;
+  --color-accent-strong: #c7d2fe;
+  --color-accent-soft: #1e1f4a;
+  --color-success: #34d399;
+  --color-success-soft: #052e16;
   --color-warning: #fbbf24;
-  --color-warning-soft: #2a1f0c;
+  --color-warning-soft: #1c1300;
   --color-danger: #f87171;
-  --color-danger-soft: #2a1212;
+  --color-danger-soft: #2a0a0a;
 }
 
 :root {
@@ -104,4 +106,37 @@ h3 {
 
 p {
   margin: 0;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* Glow utility */
+.glow-accent {
+  box-shadow: 0 0 20px -4px color-mix(in srgb, var(--color-accent) 35%, transparent);
+}
+
+.glow-accent-sm {
+  box-shadow: 0 0 12px -4px color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
+/* Subtle grid pattern for bg in dark mode */
+.dark .grid-bg {
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 40px 40px;
 }

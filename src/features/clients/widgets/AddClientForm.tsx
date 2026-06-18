@@ -30,7 +30,7 @@ export function AddClientForm({ onSubmit, onCancel }: AddClientFormProps) {
 
   return (
     <Card
-      title="Add client"
+      title="New client"
       subtitle="Creates the client, 5 onboarding stages, and stamps the active checklist."
     >
       <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">

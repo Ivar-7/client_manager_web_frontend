@@ -57,6 +57,13 @@ export default function ClientsPage() {
 
   return (
     <div className="grid gap-5">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-text">Clients</h1>
+          <p className="mt-1 text-sm text-muted">Manage and track client onboarding</p>
+        </div>
+      </div>
+
       <Card>
         <ClientsToolbar
           filters={filters}

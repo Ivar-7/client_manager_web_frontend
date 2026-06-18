@@ -41,6 +41,11 @@ export default function TasksPage() {
 
   return (
     <div className="grid gap-5">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-text">Tasks</h1>
+        <p className="mt-1 text-sm text-muted">Your assigned checklist items across all clients</p>
+      </div>
+
       <Card>
         <TasksFilterBar filters={filters} onChange={setFilters} />
       </Card>

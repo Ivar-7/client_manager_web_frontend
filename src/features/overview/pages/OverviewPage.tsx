@@ -15,11 +15,15 @@ function AdminOverview() {
     useAdminOverview()
 
   return (
-    <div className="grid gap-5">
+    <div className="grid gap-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-text">Overview</h1>
+        <p className="mt-1 text-sm text-muted">Your onboarding pipeline at a glance</p>
+      </div>
       <StatCards
         cards={[
           { label: 'Clients onboarding', value: onboardingCount.count },
-          { label: 'Incomplete checklist items', value: incompleteCount.count },
+          { label: 'Incomplete items', value: incompleteCount.count },
           { label: 'Clients at Go Live', value: goLiveCount.count },
         ]}
       />
@@ -39,10 +43,14 @@ function MemberOverview() {
   const { incompleteCount, dueTodayCount, overdueCount, myActivity } = useMemberOverview()
 
   return (
-    <div className="grid gap-5">
+    <div className="grid gap-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-text">Overview</h1>
+        <p className="mt-1 text-sm text-muted">Your tasks and recent activity</p>
+      </div>
       <StatCards
         cards={[
-          { label: 'Assigned incomplete tasks', value: incompleteCount.count },
+          { label: 'Assigned tasks', value: incompleteCount.count },
           { label: 'Due today', value: dueTodayCount.count },
           { label: 'Overdue', value: overdueCount.count },
         ]}

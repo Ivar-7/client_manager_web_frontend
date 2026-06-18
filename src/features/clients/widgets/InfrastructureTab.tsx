@@ -110,7 +110,7 @@ function AssetRow({
   }
 
   return (
-    <div className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface-strong p-3">
+    <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface-strong p-3">
       <div className="min-w-0">
         <strong className="block text-text">{asset.name}</strong>
         <p className="text-sm text-muted">
@@ -181,7 +181,7 @@ function AssetForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid gap-3 rounded-2xl border border-border bg-surface-muted p-4 sm:grid-cols-2"
+      className="grid gap-3 rounded-xl border border-border bg-surface-muted p-4 sm:grid-cols-2"
     >
       <Field label="Type">
         <Select value={type} onChange={(event) => setType(event.target.value as AssetType)}>

@@ -18,8 +18,8 @@ export function AddTemplateForm({ stageOrder, nextOrder }: AddTemplateFormProps)
 
   if (!open) {
     return (
-      <Button type="button" variant="secondary" onClick={() => setOpen(true)}>
-        Add template
+      <Button type="button" variant="secondary" size="sm" onClick={() => setOpen(true)}>
+        + Add template
       </Button>
     )
   }
@@ -48,7 +48,7 @@ export function AddTemplateForm({ stageOrder, nextOrder }: AddTemplateFormProps)
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid gap-3 rounded-2xl border border-border bg-surface-muted p-4 sm:grid-cols-2"
+      className="grid gap-3 rounded-xl border border-border bg-surface-muted p-4 sm:grid-cols-2"
     >
       <Field label="Label">
         <Input value={label} onChange={(event) => setLabel(event.target.value)} required />

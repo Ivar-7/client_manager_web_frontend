@@ -10,12 +10,12 @@ export function AssetGroup({ clientName, assets }: { clientName: string; assets:
         {assets.map((asset) => (
           <div
             key={asset.id}
-            className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface-strong p-3"
+            className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface-strong p-3"
           >
             <div className="min-w-0">
-              <strong className="block text-text">{asset.name}</strong>
-              <p className="text-sm text-muted">
-                {asset.type} · {asset.value} · {asset.provider}
+              <strong className="block text-sm text-text">{asset.name}</strong>
+              <p className="mt-0.5 text-xs text-muted">
+                {asset.type} &middot; {asset.value} &middot; {asset.provider}
               </p>
             </div>
             <div className="flex shrink-0 flex-wrap gap-1.5">

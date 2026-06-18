@@ -44,7 +44,7 @@ export function ClientOverviewTab({ client, stages, checklistItems }: ClientOver
       </Card>
 
       <Card title="Client details">
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2">
           <InlineEditField
             label="Name"
             value={client.name}
@@ -89,22 +89,25 @@ export function ClientOverviewTab({ client, stages, checklistItems }: ClientOver
             multiline
           />
         </div>
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {(client.tags ?? []).map((tag) => (
-            <TagChip key={tag} label={tag} />
-          ))}
-        </div>
+        {(client.tags ?? []).length > 0 ? (
+          <div className="mt-5 flex flex-wrap gap-1.5">
+            <span className="w-full text-xs font-semibold uppercase tracking-wider text-muted">Tags</span>
+            {(client.tags ?? []).map((tag) => (
+              <TagChip key={tag} label={tag} />
+            ))}
+          </div>
+        ) : null}
       </Card>
 
       <Card title="Assigned team">
         {assignedTeam.length === 0 ? (
           <p className="text-sm text-muted">No team members assigned yet.</p>
         ) : (
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-4">
             {assignedTeam.map((user) => (
               <div key={user.id} className="flex items-center gap-2">
                 <AvatarInitials initials={user.avatarInitials} size="sm" />
-                <span className="text-sm text-text">{user.name}</span>
+                <span className="text-sm font-medium text-text">{user.name}</span>
               </div>
             ))}
           </div>

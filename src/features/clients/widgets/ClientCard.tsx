@@ -19,18 +19,22 @@ export function ClientCard({ client, ownerInitials }: ClientCardProps) {
   return (
     <Link
       to={`/clients/${client.id}`}
-      className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface-strong p-4 transition hover:-translate-y-0.5 hover:border-accent/40"
+      className="group flex flex-col gap-3 rounded-2xl border border-border bg-surface p-4 transition-all hover:border-accent/40 hover:bg-surface-strong"
     >
-      <div className="min-w-0">
-        <strong className="block truncate text-text">{client.name}</strong>
-        <p className="truncate text-sm text-muted">{client.companyName || 'No company'}</p>
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          <Badge tone={STATUS_TONE[client.status]}>{client.status}</Badge>
-          <Badge tone="neutral">{stageName}</Badge>
-          <Badge tone={PRIORITY_TONE[client.priority]}>{client.priority}</Badge>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <strong className="block truncate text-sm font-semibold text-text group-hover:text-accent transition-colors">
+            {client.name}
+          </strong>
+          <p className="mt-0.5 truncate text-xs text-muted">{client.companyName || 'No company'}</p>
         </div>
+        {ownerInitials ? <AvatarInitials initials={ownerInitials} size="sm" /> : null}
       </div>
-      {ownerInitials ? <AvatarInitials initials={ownerInitials} size="sm" /> : null}
+      <div className="flex flex-wrap gap-1.5">
+        <Badge tone={STATUS_TONE[client.status]}>{client.status}</Badge>
+        <Badge tone="neutral">{stageName}</Badge>
+        <Badge tone={PRIORITY_TONE[client.priority]}>{client.priority}</Badge>
+      </div>
     </Link>
   )
 }

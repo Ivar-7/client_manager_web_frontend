@@ -1,5 +1,6 @@
 import { useActivityLog } from '../../../shared/api/activityLog.api'
 import { ActivityRow } from '../../../shared/components/ActivityRow'
+import { Card } from '../../../shared/components/Card'
 import { LoadMore } from '../../../shared/components/Pagination'
 import { EmptyState, LoadingState } from '../../../shared/components/States'
 
@@ -19,11 +20,11 @@ export function ActivityTab({ clientId }: { clientId: string }) {
   }
 
   return (
-    <div className="rounded-3xl border border-border bg-surface p-5">
+    <Card>
       {items.map((entry) => (
         <ActivityRow key={entry.id} entry={entry} showEntityBadge />
       ))}
       <LoadMore hasNextPage={hasNextPage} onLoadMore={nextPage} />
-    </div>
+    </Card>
   )
 }

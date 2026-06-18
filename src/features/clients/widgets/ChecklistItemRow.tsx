@@ -25,27 +25,34 @@ export function ChecklistItemRow({ item, onToggle, readOnly }: ChecklistItemRowP
   }, [item.assignedTo])
 
   return (
-    <div className="flex items-start gap-3 rounded-2xl border border-border bg-surface-strong p-3">
+    <div className={`flex items-start gap-3 rounded-xl border p-3 transition-colors ${
+      item.completed ? 'border-border/50 bg-surface-muted/50' : 'border-border bg-surface-strong'
+    }`}>
       <input
         type="checkbox"
         checked={item.completed}
         disabled={readOnly}
         onChange={(event) => onToggle(event.target.checked)}
-        className="mt-1 size-4 accent-accent"
+        className="mt-0.5 size-4 accent-accent cursor-pointer disabled:cursor-default"
       />
       <div className="min-w-0 flex-1">
         <p
-          className={`text-sm font-medium text-text ${item.completed ? 'line-through opacity-60' : ''}`}
+          className={`text-sm font-medium ${
+            item.completed ? 'text-muted line-through' : 'text-text'
+          }`}
         >
           {item.label}
           {item.required ? <span className="ml-1 text-danger">*</span> : null}
         </p>
-        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted">
-          {assignee ? <span>{assignee.name}</span> : <span>Unassigned</span>}
-          <span>Due {formatDate(item.dueDate)}</span>
+        <div className="mt-1.5 flex flex-wrap items-center gap-2">
+          <span className="text-xs text-muted">
+            {assignee ? assignee.name : <span className="opacity-50">Unassigned</span>}
+          </span>
+          <span className="text-xs text-muted/60">·</span>
+          <span className="text-xs text-muted">Due {formatDate(item.dueDate)}</span>
           <Badge tone={PRIORITY_TONE[item.priority]}>{item.priority}</Badge>
         </div>
-        {item.notes ? <p className="mt-1 text-xs text-muted">{item.notes}</p> : null}
+        {item.notes ? <p className="mt-1 text-xs text-muted/70">{item.notes}</p> : null}
       </div>
     </div>
   )

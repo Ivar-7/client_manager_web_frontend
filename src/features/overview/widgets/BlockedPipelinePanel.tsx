@@ -28,9 +28,12 @@ export function BlockedPipelinePanel({ stages }: { stages: StageRecord[] }) {
               <Link
                 key={stage.id}
                 to={`/clients/${stage.clientId}`}
-                className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface-strong p-3 hover:border-accent/40"
+                className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-surface-strong p-3 transition-colors hover:border-danger/30"
               >
-                <span className="text-sm font-medium text-text">{client?.name ?? 'Loading…'}</span>
+                <div className="flex items-center gap-3">
+                  <span className="flex size-1.5 rounded-full bg-danger" />
+                  <span className="text-sm font-medium text-text">{client?.name ?? 'Loading…'}</span>
+                </div>
                 <Badge tone="danger">{stage.name}</Badge>
               </Link>
             )

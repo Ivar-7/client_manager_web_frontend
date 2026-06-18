@@ -25,8 +25,8 @@ export function InlineEditField({
   if (readOnly) {
     return (
       <div>
-        <span className="text-sm text-muted">{label}</span>
-        <p className="mt-1 text-sm text-text">{value || '—'}</p>
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted">{label}</span>
+        <p className="mt-1.5 text-sm text-text">{value || <span className="text-muted/50">—</span>}</p>
       </div>
     )
   }
@@ -53,8 +53,8 @@ export function InlineEditField({
 
   return (
     <div>
-      <span className="text-sm text-muted">{label}</span>
-      <div className="mt-1">
+      <span className="text-xs font-semibold uppercase tracking-wider text-muted">{label}</span>
+      <div className="mt-1.5">
         {multiline ? <Textarea {...sharedProps} /> : <Input {...sharedProps} />}
       </div>
     </div>

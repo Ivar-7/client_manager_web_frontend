@@ -14,7 +14,7 @@ export function InlineConfirm({ label, confirmLabel = 'Confirm', onConfirm }: In
 
   if (!confirming) {
     return (
-      <Button variant="danger" type="button" onClick={() => setConfirming(true)}>
+      <Button variant="danger" size="sm" type="button" onClick={() => setConfirming(true)}>
         {label}
       </Button>
     )
@@ -22,9 +22,10 @@ export function InlineConfirm({ label, confirmLabel = 'Confirm', onConfirm }: In
 
   return (
     <div className="inline-flex items-center gap-2">
-      <span className="text-sm text-muted">Are you sure?</span>
+      <span className="text-xs text-muted">Sure?</span>
       <Button
         variant="danger"
+        size="sm"
         type="button"
         loading={loading}
         onClick={async () => {
@@ -39,7 +40,7 @@ export function InlineConfirm({ label, confirmLabel = 'Confirm', onConfirm }: In
       >
         {confirmLabel}
       </Button>
-      <Button variant="ghost" type="button" onClick={() => setConfirming(false)}>
+      <Button variant="ghost" size="sm" type="button" onClick={() => setConfirming(false)}>
         Cancel
       </Button>
     </div>

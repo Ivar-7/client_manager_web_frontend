@@ -106,11 +106,12 @@ function MeetingCard({
         ))}
         {linkedStage ? <Badge tone="accent">{linkedStage.name}</Badge> : null}
       </div>
-      <p className="mt-3 whitespace-pre-wrap text-sm text-text">{meeting.notes}</p>
+      <p className="mt-3 whitespace-pre-wrap text-sm text-text/80">{meeting.notes}</p>
       {(meeting.actionItems ?? []).length > 0 ? (
-        <div className="mt-3 grid gap-2">
+        <div className="mt-4 grid gap-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted">Action items</p>
           {(meeting.actionItems ?? []).map((action: ActionItem) => (
-            <label key={action.id} className="flex items-center gap-2 text-sm text-text">
+            <label key={action.id} className="flex cursor-pointer items-center gap-2 text-sm text-text">
               <input
                 type="checkbox"
                 checked={action.completed}
@@ -118,7 +119,7 @@ function MeetingCard({
                 onChange={(event) => onToggleAction(action.id, event.target.checked)}
                 className="size-4 accent-accent"
               />
-              <span className={action.completed ? 'line-through opacity-60' : ''}>
+              <span className={action.completed ? 'line-through text-muted' : ''}>
                 {action.text}
               </span>
             </label>
@@ -194,7 +195,7 @@ function MeetingForm({
         <select
           value={linkedStageId}
           onChange={(event) => setLinkedStageId(event.target.value)}
-          className="w-full rounded-2xl border border-border bg-surface-strong px-3.5 py-2.5 text-sm text-text"
+    className="w-full rounded-lg border border-border bg-surface-strong px-3 py-2 text-sm text-text outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent/20"
         >
           <option value="">None</option>
           {stages.map((stage) => (

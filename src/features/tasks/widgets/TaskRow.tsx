@@ -14,22 +14,29 @@ export function TaskRow({ item, stageName, onToggle }: TaskRowProps) {
   const overdue = isOverdue(item.dueDate, item.completed)
 
   return (
-    <div className="flex items-start gap-3 rounded-2xl border border-border bg-surface-strong p-3">
+    <div
+      className={`flex items-start gap-3 rounded-xl border p-3 transition-colors ${
+        item.completed ? 'border-border/50 bg-surface-muted/50' : 'border-border bg-surface-strong'
+      }`}
+    >
       <input
         type="checkbox"
         checked={item.completed}
         onChange={(event) => onToggle(event.target.checked)}
-        className="mt-1 size-4 accent-accent"
+        className="mt-0.5 size-4 cursor-pointer accent-accent"
       />
       <div className="min-w-0 flex-1">
         <p
-          className={`text-sm font-medium text-text ${item.completed ? 'line-through opacity-60' : ''}`}
+          className={`text-sm font-medium ${
+            item.completed ? 'text-muted line-through' : 'text-text'
+          }`}
         >
           {item.label}
         </p>
-        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted">
-          <span>{stageName}</span>
-          <span className={overdue ? 'font-semibold text-danger' : ''}>
+        <div className="mt-1.5 flex flex-wrap items-center gap-2">
+          <span className="text-xs text-muted">{stageName}</span>
+          <span className="text-xs text-muted/60">·</span>
+          <span className={`text-xs ${overdue ? 'font-semibold text-danger' : 'text-muted'}`}>
             Due {formatDate(item.dueDate)}
           </span>
           <Badge tone={PRIORITY_TONE[item.priority]}>{item.priority}</Badge>
