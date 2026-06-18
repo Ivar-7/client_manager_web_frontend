@@ -16,7 +16,7 @@ export function MeetingCard({
     <Link to={`/clients/${meeting.clientId}?tab=meetings`} className="block">
       <Card title={meeting.title} subtitle={`${clientName} · ${formatDate(meeting.date)}`}>
         <div className="flex flex-wrap gap-1.5">
-          {meeting.attendees.map((attendee) => (
+          {(meeting.attendees ?? []).map((attendee) => (
             <TagChip key={attendee} label={attendee} />
           ))}
         </div>

@@ -31,6 +31,8 @@ export interface AssetFilters {
 
 export function useAssets(pageSize: number, filters: AssetFilters) {
   const resetKey = JSON.stringify(filters)
+  const validClientIds = filters.clientIds?.filter(Boolean)
+  const enabled = !filters.clientIds || validClientIds!.length > 0
 
   return usePaginatedCollection<AssetRecord>(
     db,
@@ -38,14 +40,8 @@ export function useAssets(pageSize: number, filters: AssetFilters) {
     () => {
       const constraints: QueryConstraint[] = []
       if (filters.clientId) constraints.push(where('clientId', '==', filters.clientId))
-      if (filters.clientIds) {
-        constraints.push(
-          where(
-            'clientId',
-            'in',
-            filters.clientIds.length > 0 ? filters.clientIds.slice(0, 30) : ['__none__'],
-          ),
-        )
+      if (validClientIds && validClientIds.length > 0) {
+        constraints.push(where('clientId', 'in', validClientIds.slice(0, 30)))
       }
       if (filters.type) constraints.push(where('type', '==', filters.type))
       if (filters.status) constraints.push(where('status', '==', filters.status))
@@ -61,6 +57,7 @@ export function useAssets(pageSize: number, filters: AssetFilters) {
     pageSize,
     mapDoc,
     resetKey,
+    enabled,
   )
 }
 

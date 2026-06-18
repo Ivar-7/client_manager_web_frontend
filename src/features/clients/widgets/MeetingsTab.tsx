@@ -101,15 +101,15 @@ function MeetingCard({
   return (
     <Card title={meeting.title} subtitle={formatDate(meeting.date)}>
       <div className="flex flex-wrap gap-1.5">
-        {meeting.attendees.map((attendee) => (
+        {(meeting.attendees ?? []).map((attendee) => (
           <TagChip key={attendee} label={attendee} />
         ))}
         {linkedStage ? <Badge tone="accent">{linkedStage.name}</Badge> : null}
       </div>
       <p className="mt-3 whitespace-pre-wrap text-sm text-text">{meeting.notes}</p>
-      {meeting.actionItems.length > 0 ? (
+      {(meeting.actionItems ?? []).length > 0 ? (
         <div className="mt-3 grid gap-2">
-          {meeting.actionItems.map((action: ActionItem) => (
+          {(meeting.actionItems ?? []).map((action: ActionItem) => (
             <label key={action.id} className="flex items-center gap-2 text-sm text-text">
               <input
                 type="checkbox"

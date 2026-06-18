@@ -3,7 +3,7 @@
 ## Architecture
 
 - **`src/app/`** — Core application setup and global configuration.
-- **`src/shared/`** — Reusable primitives: `api`, `components`, `hooks`, `theme`, `types`, `utils`, `store`, `providers`.
+- **`src/shared/`** — Reusable primitives: `components`, `hooks`, `theme`, `types`, `utils`, `store`, `api`, `providers`.
 - **`src/features/<feature>/`** — Domain-driven modules: `api`, `services`, `hooks`, `widgets`, `pages`, `types`.
 - **Root Files** — `App.tsx`, `main.tsx`, `routes.tsx`.
 - **Directive** — Keep the codebase strictly modular, layered, and DRY.

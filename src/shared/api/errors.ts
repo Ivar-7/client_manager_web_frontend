@@ -30,6 +30,8 @@ export function mapAuthError(error: unknown): string {
 }
 
 export function mapFirestoreError(error: unknown): string {
+  console.error('Firestore error:', error)
+
   const code = extractAuthCode(error)
   if (code === 'permission-denied') {
     return "You don't have permission to do that."

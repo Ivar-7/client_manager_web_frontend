@@ -30,6 +30,8 @@ export interface MeetingFilters {
 
 export function useMeetingNotes(pageSize: number, filters: MeetingFilters) {
   const resetKey = JSON.stringify(filters)
+  const validClientIds = filters.clientIds?.filter(Boolean)
+  const enabled = !filters.clientIds || validClientIds!.length > 0
 
   return usePaginatedCollection<MeetingNoteRecord>(
     db,
@@ -37,14 +39,8 @@ export function useMeetingNotes(pageSize: number, filters: MeetingFilters) {
     () => {
       const constraints: QueryConstraint[] = []
       if (filters.clientId) constraints.push(where('clientId', '==', filters.clientId))
-      if (filters.clientIds) {
-        constraints.push(
-          where(
-            'clientId',
-            'in',
-            filters.clientIds.length > 0 ? filters.clientIds.slice(0, 30) : ['__none__'],
-          ),
-        )
+      if (validClientIds && validClientIds.length > 0) {
+        constraints.push(where('clientId', 'in', validClientIds.slice(0, 30)))
       }
       if (filters.stageId) constraints.push(where('linkedStageId', '==', filters.stageId))
       if (filters.startDate)
@@ -58,6 +54,7 @@ export function useMeetingNotes(pageSize: number, filters: MeetingFilters) {
     pageSize,
     mapDoc,
     resetKey,
+    enabled,
   )
 }
 
@@ -108,7 +105,7 @@ export async function toggleMeetingActionItem(
   actorId: string,
   actorName: string,
 ) {
-  const nextActionItems: ActionItem[] = meeting.actionItems.map((item) =>
+  const nextActionItems: ActionItem[] = (meeting.actionItems ?? []).map((item) =>
     item.id === actionItemId ? { ...item, completed } : item,
   )
 

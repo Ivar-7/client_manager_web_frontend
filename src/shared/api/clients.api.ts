@@ -72,6 +72,8 @@ const SORT_DIRECTION: Record<ClientSort, OrderByDirection> = {
 /** Admin: all clients, paginated. Member: pass `clientIds` to scope to assigned clients. */
 export function useClientsList(pageSize: number, filters: ClientFilters) {
   const resetKey = JSON.stringify(filters)
+  const validClientIds = filters.clientIds?.filter(Boolean)
+  const enabled = !filters.clientIds || validClientIds!.length > 0
 
   return usePaginatedCollection<ClientRecord>(
     db,
@@ -84,12 +86,8 @@ export function useClientsList(pageSize: number, filters: ClientFilters) {
         constraints.push(
           where('searchTokens', 'array-contains', filters.search.toLowerCase().trim()),
         )
-      if (filters.clientIds) {
-        if (filters.clientIds.length === 0) {
-          constraints.push(where(documentId(), '==', '__none__'))
-        } else {
-          constraints.push(where(documentId(), 'in', filters.clientIds.slice(0, 30)))
-        }
+      if (validClientIds && validClientIds.length > 0) {
+        constraints.push(where(documentId(), 'in', validClientIds.slice(0, 30)))
       }
       return constraints
     },
@@ -98,6 +96,7 @@ export function useClientsList(pageSize: number, filters: ClientFilters) {
     pageSize,
     mapDoc,
     resetKey,
+    enabled,
   )
 }
 
@@ -144,9 +143,10 @@ export async function getClientsForFilterDropdown(): Promise<ClientRecord[]> {
 }
 
 export async function getClientsByIds(clientIds: string[]): Promise<ClientRecord[]> {
-  if (clientIds.length === 0) return []
+  const uniqueIds = Array.from(new Set(clientIds.filter(Boolean)))
+  if (uniqueIds.length === 0) return []
   const chunks: string[][] = []
-  for (let i = 0; i < clientIds.length; i += 30) chunks.push(clientIds.slice(i, i + 30))
+  for (let i = 0; i < uniqueIds.length; i += 30) chunks.push(uniqueIds.slice(i, i + 30))
 
   const results = await Promise.all(
     chunks.map((chunk) =>
@@ -249,7 +249,8 @@ export async function getClientMemberClientIds(uid: string): Promise<string[]> {
   const snapshot = await getDocs(
     query(collection(db, 'checklistItems'), where('assignedTo', '==', uid)),
   )
-  return Array.from(new Set(snapshot.docs.map((document) => document.data().clientId as string)))
+  const clientIds = snapshot.docs.map((document) => document.data().clientId as string | undefined)
+  return Array.from(new Set(clientIds.filter((clientId): clientId is string => Boolean(clientId))))
 }
 
 /**

@@ -98,7 +98,10 @@ export function useBlockedStages() {
         setStages(items)
         setStatus(items.length === 0 ? 'empty' : 'success')
       },
-      () => setStatus('error'),
+      (snapshotError) => {
+        mapFirestoreError(snapshotError)
+        setStatus('error')
+      },
     )
     return unsubscribe
   }, [])

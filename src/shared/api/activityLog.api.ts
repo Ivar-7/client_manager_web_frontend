@@ -26,6 +26,7 @@ export interface LogActivityInput {
 export function logActivity(input: LogActivityInput) {
   addDoc(collection(db, COLLECTION), {
     ...input,
+    actorName: input.actorName || 'Unknown user',
     timestamp: serverTimestamp(),
   }).catch((error) => {
     console.error('Failed to write activity log entry', error)
@@ -47,6 +48,8 @@ export interface ActivityFilters {
 
 export function useActivityLog(pageSize: number, filters: ActivityFilters) {
   const resetKey = JSON.stringify(filters)
+  const validClientIds = filters.clientIds?.filter(Boolean)
+  const enabled = !filters.clientIds || validClientIds!.length > 0
 
   return useInfiniteCollection<ActivityLogRecord>(
     db,
@@ -54,14 +57,8 @@ export function useActivityLog(pageSize: number, filters: ActivityFilters) {
     () => {
       const constraints: QueryConstraint[] = []
       if (filters.clientId) constraints.push(where('clientId', '==', filters.clientId))
-      if (filters.clientIds) {
-        constraints.push(
-          where(
-            'clientId',
-            'in',
-            filters.clientIds.length > 0 ? filters.clientIds.slice(0, 30) : ['__none__'],
-          ),
-        )
+      if (validClientIds && validClientIds.length > 0) {
+        constraints.push(where('clientId', 'in', validClientIds.slice(0, 30)))
       }
       if (filters.entityType) constraints.push(where('entityType', '==', filters.entityType))
       if (filters.actorId) constraints.push(where('actorId', '==', filters.actorId))
@@ -76,5 +73,6 @@ export function useActivityLog(pageSize: number, filters: ActivityFilters) {
     pageSize,
     mapDoc,
     resetKey,
+    enabled,
   )
 }

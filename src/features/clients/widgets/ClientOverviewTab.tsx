@@ -90,7 +90,7 @@ export function ClientOverviewTab({ client, stages, checklistItems }: ClientOver
           />
         </div>
         <div className="mt-4 flex flex-wrap gap-1.5">
-          {client.tags.map((tag) => (
+          {(client.tags ?? []).map((tag) => (
             <TagChip key={tag} label={tag} />
           ))}
         </div>

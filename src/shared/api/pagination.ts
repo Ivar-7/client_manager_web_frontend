@@ -44,6 +44,7 @@ export function usePaginatedCollection<T>(
   pageSize: number,
   mapDoc: (doc: QueryDocumentSnapshot<DocumentData>) => T,
   resetKey: string,
+  enabled = true,
 ): PaginatedResult<T> {
   const [page, setPage] = useState(0)
   const [items, setItems] = useState<T[]>([])
@@ -58,6 +59,13 @@ export function usePaginatedCollection<T>(
   }, [resetKey])
 
   useEffect(() => {
+    if (!enabled) {
+      setItems([])
+      setHasNextPage(false)
+      setStatus('empty')
+      return
+    }
+
     setStatus('loading')
     setError(null)
 
@@ -90,7 +98,7 @@ export function usePaginatedCollection<T>(
 
     return unsubscribe
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, collectionPath, page, pageSize, orderByField, orderByDirection, resetKey])
+  }, [db, collectionPath, page, pageSize, orderByField, orderByDirection, resetKey, enabled])
 
   return {
     items,
@@ -125,6 +133,7 @@ export function useInfiniteCollection<T>(
   pageSize: number,
   mapDoc: (doc: QueryDocumentSnapshot<DocumentData>) => T,
   resetKey: string,
+  enabled = true,
 ): InfiniteResult<T> {
   const [pageCount, setPageCount] = useState(1)
   const [items, setItems] = useState<T[]>([])
@@ -137,6 +146,13 @@ export function useInfiniteCollection<T>(
   }, [resetKey])
 
   useEffect(() => {
+    if (!enabled) {
+      setItems([])
+      setHasNextPage(false)
+      setStatus('empty')
+      return
+    }
+
     setStatus('loading')
     setError(null)
 
@@ -167,7 +183,7 @@ export function useInfiniteCollection<T>(
 
     return unsubscribe
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, collectionPath, pageCount, pageSize, orderByField, orderByDirection, resetKey])
+  }, [db, collectionPath, pageCount, pageSize, orderByField, orderByDirection, resetKey, enabled])
 
   return {
     items,
@@ -198,8 +214,9 @@ export function useCollectionCount(
         setCount(snapshot.data().count)
         setStatus('success')
       })
-      .catch(() => {
+      .catch((error) => {
         if (cancelled) return
+        mapFirestoreError(error)
         setStatus('error')
       })
 
