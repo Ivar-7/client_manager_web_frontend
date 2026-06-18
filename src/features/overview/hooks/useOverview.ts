@@ -5,6 +5,8 @@ import { db } from '../../../shared/api/firebaseClient'
 import { useCollectionCount } from '../../../shared/api/pagination'
 import { useActivityLog } from '../../../shared/api/activityLog.api'
 import { useBlockedStages } from '../../../shared/api/stages.api'
+import { usePaginatedCollection } from '../../../shared/api/pagination'
+import type { ClientRecord } from '../../../shared/types/domain.types'
 
 function startOfToday() {
   const date = new Date()
@@ -18,6 +20,11 @@ function startOfTomorrow() {
   return date
 }
 
+function mapClient(doc: import('firebase/firestore').QueryDocumentSnapshot): ClientRecord {
+  const data = doc.data()
+  return { id: doc.id, ...data } as ClientRecord
+}
+
 export function useAdminOverview() {
   const onboardingCount = useCollectionCount(
     db,
@@ -25,11 +32,23 @@ export function useAdminOverview() {
     () => [where('status', '==', 'onboarding')],
     'onboarding',
   )
+  const activeCount = useCollectionCount(
+    db,
+    'clients',
+    () => [where('status', '==', 'active')],
+    'active',
+  )
   const incompleteCount = useCollectionCount(
     db,
     'checklistItems',
     () => [where('completed', '==', false)],
     'incomplete',
+  )
+  const completedCount = useCollectionCount(
+    db,
+    'checklistItems',
+    () => [where('completed', '==', true)],
+    'completed',
   )
   const goLiveCount = useCollectionCount(
     db,
@@ -37,10 +56,36 @@ export function useAdminOverview() {
     () => [where('onboardingStage', '==', 5)],
     'golive',
   )
-  const recentActivity = useActivityLog(10, {})
+  const highPriorityCount = useCollectionCount(
+    db,
+    'clients',
+    () => [where('priority', '==', 'high'), where('status', '==', 'onboarding')],
+    'highpriority',
+  )
+  const recentActivity = useActivityLog(8, {})
   const blockedStages = useBlockedStages()
+  const recentClients = usePaginatedCollection<ClientRecord>(
+    db,
+    'clients',
+    () => [],
+    'updatedAt',
+    'desc',
+    5,
+    mapClient,
+    'recent-clients',
+  )
 
-  return { onboardingCount, incompleteCount, goLiveCount, recentActivity, blockedStages }
+  return {
+    onboardingCount,
+    activeCount,
+    incompleteCount,
+    completedCount,
+    goLiveCount,
+    highPriorityCount,
+    recentActivity,
+    blockedStages,
+    recentClients,
+  }
 }
 
 export function useMemberOverview() {
