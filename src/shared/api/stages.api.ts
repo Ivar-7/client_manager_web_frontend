@@ -189,6 +189,36 @@ export async function updateStageStatus(
   return { ok: true }
 }
 
+/**
+ * Called after a checklist item toggle. Auto-approves a stage once every required
+ * item is complete, and auto-starts the next stage — so members never need an
+ * admin-only status change to progress an onboarding they're fully checked off.
+ * Also reverts an auto-approved stage back to inProgress if an item is re-opened.
+ */
+export async function maybeAutoAdvanceStage(
+  stage: StageRecord,
+  allStages: StageRecord[],
+  items: ChecklistItemRecord[],
+  actorId: string,
+  actorName: string,
+) {
+  const outstanding = getOutstandingRequiredItems(items, stage.id)
+
+  if (outstanding.length === 0 && (stage.status === 'pending' || stage.status === 'inProgress')) {
+    await updateStageStatus(stage, 'approved', actorId, actorName, items)
+
+    const nextStage = allStages.find((candidate) => candidate.order === stage.order + 1)
+    if (nextStage && nextStage.status === 'pending') {
+      await updateStageStatus(nextStage, 'inProgress', actorId, actorName, items)
+    }
+    return
+  }
+
+  if (outstanding.length > 0 && stage.status === 'approved') {
+    await updateStageStatus(stage, 'inProgress', actorId, actorName, items)
+  }
+}
+
 export async function updateStageDueDate(stage: StageRecord, dueDate: Date | null) {
   await updateDoc(doc(db, COLLECTION, stage.id), {
     dueDate: dueDate ? Timestamp.fromDate(dueDate) : null,

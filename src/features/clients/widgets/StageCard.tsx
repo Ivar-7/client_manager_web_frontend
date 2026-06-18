@@ -8,6 +8,7 @@ import { formatDate, toLocalDateInputValue } from '../../../shared/utils/dates'
 import {
   canMoveToInProgress,
   getOutstandingRequiredItems,
+  maybeAutoAdvanceStage,
   updateStageComment,
   updateStageDueDate,
   updateStageStatus,
@@ -206,9 +207,19 @@ export function StageCard({
                   readOnly={!isAdmin && item.assignedTo !== currentUserId}
                   isAdmin={isAdmin}
                   users={users}
-                  onToggle={(completed) =>
-                    toggleChecklistItem(item, completed, currentUserId, currentUserName)
-                  }
+                  onToggle={async (completed) => {
+                    await toggleChecklistItem(item, completed, currentUserId, currentUserName)
+                    const updatedItems = items.map((candidate) =>
+                      candidate.id === item.id ? { ...candidate, completed } : candidate,
+                    )
+                    await maybeAutoAdvanceStage(
+                      stage,
+                      allStages,
+                      updatedItems,
+                      currentUserId,
+                      currentUserName,
+                    )
+                  }}
                 />
               ))}
             </div>
