@@ -53,7 +53,13 @@ export function TemplateStageGroup({ stageOrder, stageName, templates }: Templat
                   onClick={() => reorderChecklistTemplates(template, sorted[index - 1])}
                   aria-label="Move up"
                 >
-                  <svg viewBox="0 0 16 16" fill="currentColor" className="size-3.5"><path fillRule="evenodd" d="M8 2a.75.75 0 0 1 .75.75v8.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 0 1 1.06-1.06L7.25 11.44V2.75A.75.75 0 0 1 8 2Z" clipRule="evenodd" /></svg>
+                  <svg viewBox="0 0 16 16" fill="currentColor" className="size-3.5">
+                    <path
+                      fillRule="evenodd"
+                      d="M8 2a.75.75 0 0 1 .75.75v8.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 0 1 1.06-1.06L7.25 11.44V2.75A.75.75 0 0 1 8 2Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
                 </Button>
                 <Button
                   type="button"
@@ -63,7 +69,13 @@ export function TemplateStageGroup({ stageOrder, stageName, templates }: Templat
                   onClick={() => reorderChecklistTemplates(template, sorted[index + 1])}
                   aria-label="Move down"
                 >
-                  <svg viewBox="0 0 16 16" fill="currentColor" className="size-3.5"><path fillRule="evenodd" d="M8 14a.75.75 0 0 1-.75-.75V4.56L4.03 7.78a.75.75 0 0 1-1.06-1.06l4.5-4.5a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.75 4.56v8.69A.75.75 0 0 1 8 14Z" clipRule="evenodd" /></svg>
+                  <svg viewBox="0 0 16 16" fill="currentColor" className="size-3.5">
+                    <path
+                      fillRule="evenodd"
+                      d="M8 14a.75.75 0 0 1-.75-.75V4.56L4.03 7.78a.75.75 0 0 1-1.06-1.06l4.5-4.5a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.75 4.56v8.69A.75.75 0 0 1 8 14Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
                 </Button>
                 <Button
                   type="button"

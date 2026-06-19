@@ -8,9 +8,7 @@ export function ActivityTab({ clientId }: { clientId: string }) {
   const { items, status, hasNextPage, nextPage } = useActivityLog(25, { clientId })
 
   if (status === 'loading') {
-    return (
-      <LoadingState title="" description="" />
-    )
+    return <LoadingState title="" description="" />
   }
 
   if (items.length === 0) {

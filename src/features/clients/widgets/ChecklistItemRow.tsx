@@ -7,7 +7,11 @@ import { UserSelect } from '../../../shared/components/UserSelect'
 import { formatDate, toLocalDateInputValue } from '../../../shared/utils/dates'
 import { updateChecklistItem } from '../../../shared/api/checklistItems.api'
 import { getUsersByIds } from '../../../shared/api/users.api'
-import type { ChecklistItemRecord, ClientPriority, UserRecord } from '../../../shared/types/domain.types'
+import type {
+  ChecklistItemRecord,
+  ClientPriority,
+  UserRecord,
+} from '../../../shared/types/domain.types'
 
 interface ChecklistItemRowProps {
   item: ChecklistItemRecord
@@ -19,7 +23,13 @@ interface ChecklistItemRowProps {
 
 const PRIORITY_TONE = { low: 'neutral', medium: 'warning', high: 'danger' } as const
 
-export function ChecklistItemRow({ item, onToggle, readOnly, isAdmin, users }: ChecklistItemRowProps) {
+export function ChecklistItemRow({
+  item,
+  onToggle,
+  readOnly,
+  isAdmin,
+  users,
+}: ChecklistItemRowProps) {
   const [assignee, setAssignee] = useState<UserRecord | null>(null)
   const [editing, setEditing] = useState(false)
 
@@ -46,7 +56,9 @@ export function ChecklistItemRow({ item, onToggle, readOnly, isAdmin, users }: C
           className="mt-0.5 size-4 accent-accent cursor-pointer disabled:cursor-default"
         />
         <div className="min-w-0 flex-1">
-          <p className={`text-sm font-medium ${item.completed ? 'text-muted line-through' : 'text-text'}`}>
+          <p
+            className={`text-sm font-medium ${item.completed ? 'text-muted line-through' : 'text-text'}`}
+          >
             {item.label}
             {item.required ? <span className="ml-1 text-danger">*</span> : null}
           </p>
@@ -61,7 +73,12 @@ export function ChecklistItemRow({ item, onToggle, readOnly, isAdmin, users }: C
           {item.notes ? <p className="mt-1 text-xs text-muted/70">{item.notes}</p> : null}
         </div>
         {isAdmin ? (
-          <Button type="button" variant="ghost" size="sm" onClick={() => setEditing((value) => !value)}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setEditing((value) => !value)}
+          >
             {editing ? 'Close' : 'Edit'}
           </Button>
         ) : null}

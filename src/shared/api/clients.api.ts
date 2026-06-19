@@ -252,9 +252,16 @@ const CHILD_COLLECTIONS = ['stages', 'checklistItems', 'assetRecords', 'meetingN
  * Deletes the client and every stage/checklist item/asset/meeting note tied
  * to it. The activity log is append-only and is intentionally left intact.
  */
-export async function deleteClient(clientId: string, actorId: string, actorName: string, clientName: string) {
+export async function deleteClient(
+  clientId: string,
+  actorId: string,
+  actorName: string,
+  clientName: string,
+) {
   for (const collectionName of CHILD_COLLECTIONS) {
-    const snapshot = await getDocs(query(collection(db, collectionName), where('clientId', '==', clientId)))
+    const snapshot = await getDocs(
+      query(collection(db, collectionName), where('clientId', '==', clientId)),
+    )
     const docs = snapshot.docs
     for (let i = 0; i < docs.length; i += 450) {
       const batch = writeBatch(db)

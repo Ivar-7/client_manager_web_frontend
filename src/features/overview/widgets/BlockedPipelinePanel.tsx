@@ -19,7 +19,9 @@ export function BlockedPipelinePanel({ stages }: { stages: StageRecord[] }) {
   return (
     <div className="rounded-2xl border border-border bg-surface p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted">Blocked pipeline</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted">
+          Blocked pipeline
+        </p>
         {stages.length > 0 && (
           <span className="flex size-5 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white">
             {stages.length}

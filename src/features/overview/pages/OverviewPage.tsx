@@ -133,10 +133,7 @@ function AdminOverview() {
           goLive={goLiveCount.count}
           active={activeCount.count}
         />
-        <TaskHealthCard
-          incomplete={incompleteCount.count}
-          completed={completedCount.count}
-        />
+        <TaskHealthCard incomplete={incompleteCount.count} completed={completedCount.count} />
         <QuickStatRow
           stats={[
             {
@@ -147,8 +144,7 @@ function AdminOverview() {
             },
             {
               label: 'Blocked stages',
-              value:
-                blockedStages.status === 'loading' ? null : blockedStages.stages.length,
+              value: blockedStages.status === 'loading' ? null : blockedStages.stages.length,
               icon: IconWarning,
               tone:
                 blockedStages.status !== 'loading' && blockedStages.stages.length > 0
@@ -165,7 +161,7 @@ function AdminOverview() {
               label: 'High priority clients',
               value: highPriorityCount.count,
               icon: IconFire,
-              tone: highPriorityCount.count ?? 0 > 0 ? 'danger' : 'default',
+              tone: (highPriorityCount.count ?? 0 > 0) ? 'danger' : 'default',
             },
           ]}
         />

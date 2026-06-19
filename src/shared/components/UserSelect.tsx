@@ -9,7 +9,12 @@ interface UserSelectProps {
   placeholder?: string
 }
 
-export function UserSelect({ users, value, onChange, placeholder = 'Unassigned' }: UserSelectProps) {
+export function UserSelect({
+  users,
+  value,
+  onChange,
+  placeholder = 'Unassigned',
+}: UserSelectProps) {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const containerRef = useRef<HTMLDivElement>(null)

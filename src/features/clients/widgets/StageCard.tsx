@@ -22,14 +22,13 @@ import type {
 } from '../../../shared/types/domain.types'
 import { ChecklistItemRow } from './ChecklistItemRow'
 
-const STATUS_TONE: Record<StageStatus, 'neutral' | 'accent' | 'danger' | 'positive' | 'warning'> =
-  {
-    pending: 'neutral',
-    inProgress: 'accent',
-    blocked: 'danger',
-    approved: 'positive',
-    rejected: 'warning',
-  }
+const STATUS_TONE: Record<StageStatus, 'neutral' | 'accent' | 'danger' | 'positive' | 'warning'> = {
+  pending: 'neutral',
+  inProgress: 'accent',
+  blocked: 'danger',
+  approved: 'positive',
+  rejected: 'warning',
+}
 
 const STATUS_DOT: Record<StageStatus, string> = {
   pending: 'bg-muted/40',
@@ -253,7 +252,12 @@ export function StageCard({
                   </Button>
                 </div>
               ) : (
-                <Button type="button" variant="secondary" size="sm" onClick={() => setAddOpen(true)}>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setAddOpen(true)}
+                >
                   + Add checklist item
                 </Button>
               )

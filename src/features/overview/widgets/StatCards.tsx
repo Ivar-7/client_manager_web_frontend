@@ -39,15 +39,15 @@ export function StatCards({ cards }: StatCardsProps) {
             className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-5"
           >
             <div className="flex items-start justify-between gap-2">
-              <div className={`flex size-9 shrink-0 items-center justify-center rounded-xl ${TONE_ICON_BG[tone]}`}>
+              <div
+                className={`flex size-9 shrink-0 items-center justify-center rounded-xl ${TONE_ICON_BG[tone]}`}
+              >
                 {card.icon}
               </div>
               {card.trend ? (
                 <span
                   className={`flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold ${
-                    card.trend.up
-                      ? 'bg-success-soft text-success'
-                      : 'bg-danger-soft text-danger'
+                    card.trend.up ? 'bg-success-soft text-success' : 'bg-danger-soft text-danger'
                   }`}
                 >
                   {card.trend.up ? '↑' : '↓'} {card.trend.value}

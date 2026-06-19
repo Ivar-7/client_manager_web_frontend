@@ -26,7 +26,9 @@ export function InlineEditField({
     return (
       <div>
         <span className="text-xs font-semibold uppercase tracking-wider text-muted">{label}</span>
-        <p className="mt-1.5 text-sm text-text">{value || <span className="text-muted/50">—</span>}</p>
+        <p className="mt-1.5 text-sm text-text">
+          {value || <span className="text-muted/50">—</span>}
+        </p>
       </div>
     )
   }

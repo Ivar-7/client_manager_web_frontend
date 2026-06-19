@@ -32,9 +32,7 @@ export function TaskHealthCard({ incomplete, completed }: TaskHealthCardProps) {
 
       <p className="mt-1 font-mono text-3xl font-bold tracking-tight text-text">
         {completed != null ? completed : <Skeleton />}
-        <span className="ml-1 text-base font-normal text-muted">
-          / {total > 0 ? total : '—'}
-        </span>
+        <span className="ml-1 text-base font-normal text-muted">/ {total > 0 ? total : '—'}</span>
       </p>
       <p className="mt-0.5 text-xs text-muted">items completed across all clients</p>
 

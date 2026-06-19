@@ -117,7 +117,9 @@ export function ClientOverviewTab({ client, stages, checklistItems }: ClientOver
         </div>
         {(client.tags ?? []).length > 0 ? (
           <div className="mt-5 flex flex-wrap gap-1.5">
-            <span className="w-full text-xs font-semibold uppercase tracking-wider text-muted">Tags</span>
+            <span className="w-full text-xs font-semibold uppercase tracking-wider text-muted">
+              Tags
+            </span>
             {(client.tags ?? []).map((tag) => (
               <TagChip key={tag} label={tag} />
             ))}

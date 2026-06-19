@@ -19,15 +19,15 @@ const TONE_STYLES = {
 export function QuickStatRow({ stats }: { stats: QuickStatProps[] }) {
   return (
     <div className="rounded-2xl border border-border bg-surface p-5">
-      <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted">
-        At a glance
-      </p>
+      <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted">At a glance</p>
       <div className="grid gap-4">
         {stats.map((stat) => {
           const styles = TONE_STYLES[stat.tone ?? 'default']
           return (
             <div key={stat.label} className="flex items-center gap-3">
-              <div className={`flex size-8 shrink-0 items-center justify-center rounded-lg ${styles.icon}`}>
+              <div
+                className={`flex size-8 shrink-0 items-center justify-center rounded-lg ${styles.icon}`}
+              >
                 {stat.icon}
               </div>
               <div className="min-w-0 flex-1">

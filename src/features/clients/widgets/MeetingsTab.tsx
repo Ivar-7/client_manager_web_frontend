@@ -51,10 +51,7 @@ export function MeetingsTab({ clientId, stages }: MeetingsTabProps) {
       ) : null}
 
       {status === 'loading' ? (
-        <LoadingState
-          title=""
-          description=""
-        />
+        <LoadingState title="" description="" />
       ) : items.length === 0 ? (
         <EmptyState
           title="No meeting notes"
@@ -111,7 +108,10 @@ function MeetingCard({
         <div className="mt-4 grid gap-2">
           <p className="text-xs font-semibold uppercase tracking-wider text-muted">Action items</p>
           {(meeting.actionItems ?? []).map((action: ActionItem) => (
-            <label key={action.id} className="flex cursor-pointer items-center gap-2 text-sm text-text">
+            <label
+              key={action.id}
+              className="flex cursor-pointer items-center gap-2 text-sm text-text"
+            >
               <input
                 type="checkbox"
                 checked={action.completed}
@@ -195,7 +195,7 @@ function MeetingForm({
         <select
           value={linkedStageId}
           onChange={(event) => setLinkedStageId(event.target.value)}
-    className="w-full rounded-lg border border-border bg-surface-strong px-3 py-2 text-sm text-text outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent/20"
+          className="w-full rounded-lg border border-border bg-surface-strong px-3 py-2 text-sm text-text outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent/20"
         >
           <option value="">None</option>
           {stages.map((stage) => (

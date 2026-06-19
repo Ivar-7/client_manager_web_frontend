@@ -22,6 +22,7 @@ New users create a workspace account with their name, email, and a password (min
 The Dashboard is the home screen after login and gives an at-a-glance view of how onboarding is going.
 
 **Admins see:**
+
 - Headline stats — clients currently onboarding, incomplete tasks, clients at the go-live stage, and high-priority clients, each with a trend vs. the previous period.
 - A pipeline funnel showing how many clients sit at each stage (Onboarding → Go Live → Active).
 - Task completion health with a 7-day trend.

@@ -38,7 +38,11 @@ export function ErrorState({ title, description, action }: StateProps) {
     <div className="grid gap-3 rounded-2xl border border-danger/20 bg-danger-soft p-10 text-center">
       <div className="mx-auto flex size-10 items-center justify-center rounded-xl bg-danger/10">
         <svg viewBox="0 0 20 20" fill="currentColor" className="size-5 text-danger">
-          <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clipRule="evenodd" />
+          <path
+            fillRule="evenodd"
+            d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+            clipRule="evenodd"
+          />
         </svg>
       </div>
       <strong className="text-sm font-semibold text-danger">{title}</strong>

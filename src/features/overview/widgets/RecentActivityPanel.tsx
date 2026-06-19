@@ -41,11 +41,7 @@ export function RecentActivityPanel({ title, entries }: RecentActivityPanelProps
       ) : (
         <div>
           {entries.map((entry) => (
-            <ActivityRow
-              key={entry.id}
-              entry={entry}
-              clientName={clients[entry.clientId]?.name}
-            />
+            <ActivityRow key={entry.id} entry={entry} clientName={clients[entry.clientId]?.name} />
           ))}
         </div>
       )}

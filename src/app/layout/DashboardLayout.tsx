@@ -92,6 +92,66 @@ const NAV_ITEMS = [
   },
 ]
 
+const ADMIN_NAV_ITEMS = [
+  {
+    to: '/admin/analytics',
+    label: 'Analytics',
+    icon: (
+      <svg viewBox="0 0 20 20" fill="currentColor" className="size-[18px]">
+        <path d="M2 11a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0v-5Zm5-6a1 1 0 1 1 2 0v11a1 1 0 1 1-2 0V5Zm5 3a1 1 0 1 1 2 0v8a1 1 0 1 1-2 0V8Zm5-5a1 1 0 1 1 2 0v13a1 1 0 1 1-2 0V3Z" />
+      </svg>
+    ),
+  },
+  {
+    to: '/admin/automations',
+    label: 'Automations',
+    icon: (
+      <svg viewBox="0 0 20 20" fill="currentColor" className="size-[18px]">
+        <path
+          fillRule="evenodd"
+          d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567l-.091.549a.798.798 0 0 1-.517.608 7.45 7.45 0 0 0-.478.198.798.798 0 0 1-.796-.064l-.453-.324a1.875 1.875 0 0 0-2.416.2l-.243.243a1.875 1.875 0 0 0-.2 2.416l.324.453a.798.798 0 0 1 .064.796 7.448 7.448 0 0 0-.198.478.798.798 0 0 1-.608.517l-.55.092a1.875 1.875 0 0 0-1.566 1.849v.344c0 .916.663 1.699 1.567 1.85l.549.091c.281.047.508.25.608.517.06.162.127.321.198.478a.798.798 0 0 1-.064.796l-.324.453a1.875 1.875 0 0 0 .2 2.416l.243.243c.648.648 1.67.733 2.416.2l.453-.324a.798.798 0 0 1 .796-.064c.157.071.316.137.478.198.267.1.47.327.517.608l.092.55c.15.903.932 1.566 1.849 1.566h.344c.916 0 1.699-.663 1.85-1.567l.091-.549a.798.798 0 0 1 .517-.608 7.52 7.52 0 0 0 .478-.198.798.798 0 0 1 .796.064l.453.324a1.875 1.875 0 0 0 2.416-.2l.243-.243c.648-.648.733-1.67.2-2.416l-.324-.453a.798.798 0 0 1-.064-.796c.071-.157.137-.316.198-.478.1-.267.327-.47.608-.517l.55-.091a1.875 1.875 0 0 0 1.566-1.85v-.344c0-.916-.663-1.699-1.567-1.85l-.549-.091a.798.798 0 0 1-.608-.517 7.507 7.507 0 0 0-.198-.478.798.798 0 0 1 .064-.796l.324-.453a1.875 1.875 0 0 0-.2-2.416l-.243-.243a1.875 1.875 0 0 0-2.416-.2l-.453.324a.798.798 0 0 1-.796.064 7.462 7.462 0 0 0-.478-.198.798.798 0 0 1-.517-.608l-.091-.55a1.875 1.875 0 0 0-1.85-1.566h-.344ZM10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+          clipRule="evenodd"
+        />
+      </svg>
+    ),
+  },
+  {
+    to: '/admin/billing',
+    label: 'Billing',
+    icon: (
+      <svg viewBox="0 0 20 20" fill="currentColor" className="size-[18px]">
+        <path d="M2.5 4A1.5 1.5 0 0 0 1 5.5V6h18v-.5A1.5 1.5 0 0 0 17.5 4h-15ZM19 8.5H1v6A1.5 1.5 0 0 0 2.5 16h15a1.5 1.5 0 0 0 1.5-1.5v-6ZM3 13.25a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75Zm4.75-.75a.75.75 0 0 0 0 1.5h3.5a.75.75 0 0 0 0-1.5h-3.5Z" />
+      </svg>
+    ),
+  },
+  {
+    to: '/admin/team-performance',
+    label: 'Team performance',
+    icon: (
+      <svg viewBox="0 0 20 20" fill="currentColor" className="size-[18px]">
+        <path
+          fillRule="evenodd"
+          d="M10 1a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9ZM5.5 17.5a4.5 4.5 0 1 1 9 0v.75a.75.75 0 0 1-.75.75h-7.5a.75.75 0 0 1-.75-.75v-.75Z"
+          clipRule="evenodd"
+        />
+      </svg>
+    ),
+  },
+  {
+    to: '/admin/audit-log',
+    label: 'Audit log',
+    icon: (
+      <svg viewBox="0 0 20 20" fill="currentColor" className="size-[18px]">
+        <path
+          fillRule="evenodd"
+          d="M10 1.75a.75.75 0 0 1 .692.462l1.41 3.393 3.664.293a.75.75 0 0 1 .428 1.317l-2.791 2.39.853 3.575a.75.75 0 0 1-1.117.814L10 12.347l-3.139 1.647a.75.75 0 0 1-1.117-.814l.853-3.575-2.79-2.39a.75.75 0 0 1 .427-1.317l3.664-.293L9.308 2.212A.75.75 0 0 1 10 1.75Z"
+          clipRule="evenodd"
+        />
+      </svg>
+    ),
+  },
+]
+
 export default function DashboardLayout() {
   const { profile, isAdmin } = useAuth()
   const { theme, toggleTheme } = useTheme()
@@ -136,6 +196,7 @@ export default function DashboardLayout() {
   }, [location.pathname])
 
   const roleLabel = isAdmin ? 'Admin' : 'Member'
+  const navItems = isAdmin ? [...NAV_ITEMS, ...ADMIN_NAV_ITEMS] : NAV_ITEMS
 
   return (
     <div className="flex min-h-[100svh] bg-bg">
@@ -169,7 +230,7 @@ export default function DashboardLayout() {
 
         {/* Nav */}
         <nav className="flex-1 space-y-0.5 overflow-y-auto p-3" aria-label="Dashboard sections">
-          {NAV_ITEMS.map((item) => (
+          {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -185,9 +246,7 @@ export default function DashboardLayout() {
                 <>
                   <span className={isActive ? 'text-accent' : 'text-muted'}>{item.icon}</span>
                   {item.label}
-                  {isActive && (
-                    <span className="ml-auto size-1.5 rounded-full bg-accent" />
-                  )}
+                  {isActive && <span className="ml-auto size-1.5 rounded-full bg-accent" />}
                 </>
               )}
             </NavLink>
@@ -196,7 +255,6 @@ export default function DashboardLayout() {
 
         {/* User footer */}
         <div ref={userMenuRef} className="relative border-t border-border p-3">
-
           {/* Popover — floats upward */}
           {userMenuOpen && (
             <div className="absolute bottom-full left-3 right-3 mb-2 overflow-hidden rounded-xl border border-border bg-surface shadow-xl shadow-black/20">
@@ -209,26 +267,47 @@ export default function DashboardLayout() {
               {/* Theme toggle */}
               <button
                 type="button"
-                onClick={() => { toggleTheme(); setUserMenuOpen(false) }}
+                onClick={() => {
+                  toggleTheme()
+                  setUserMenuOpen(false)
+                }}
                 className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-text transition-colors hover:bg-surface-strong"
               >
                 {theme === 'dark' ? (
-                  <svg viewBox="0 0 20 20" fill="currentColor" className="size-4 shrink-0 text-muted">
+                  <svg
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="size-4 shrink-0 text-muted"
+                  >
                     <path d="M10 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm4 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-.464 4.95.707.707a1 1 0 0 0 1.414-1.414l-.707-.707a1 1 0 0 0-1.414 1.414Zm2.12-10.607a1 1 0 0 1 0 1.414l-.706.707a1 1 0 1 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0ZM17 11a1 1 0 1 0 0-2h-1a1 1 0 1 0 0 2h1Zm-7 4a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM5.05 6.464A1 1 0 1 0 6.465 5.05l-.708-.707a1 1 0 0 0-1.414 1.414l.707.707Zm1.414 8.486-.707.707a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 1.414ZM4 11a1 1 0 1 0 0-2H3a1 1 0 1 0 0 2h1Z" />
                   </svg>
                 ) : (
-                  <svg viewBox="0 0 20 20" fill="currentColor" className="size-4 shrink-0 text-muted">
-                    <path fillRule="evenodd" d="M7.455 2.004a.75.75 0 0 1 .26.77 7 7 0 0 0 9.958 7.967.75.75 0 0 1 1.067.853A8.5 8.5 0 1 1 6.647 1.921a.75.75 0 0 1 .808.083Z" clipRule="evenodd" />
+                  <svg
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="size-4 shrink-0 text-muted"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M7.455 2.004a.75.75 0 0 1 .26.77 7 7 0 0 0 9.958 7.967.75.75 0 0 1 1.067.853A8.5 8.5 0 1 1 6.647 1.921a.75.75 0 0 1 .808.083Z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 )}
-                <span className="flex-1 text-left">{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+                <span className="flex-1 text-left">
+                  {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+                </span>
                 {/* Toggle pill */}
-                <span className={`flex h-5 w-9 items-center rounded-full px-0.5 transition-colors ${
-                  theme === 'dark' ? 'bg-accent' : 'bg-border-strong'
-                }`}>
-                  <span className={`size-4 rounded-full bg-white shadow transition-transform ${
-                    theme === 'dark' ? 'translate-x-4' : 'translate-x-0'
-                  }`} />
+                <span
+                  className={`flex h-5 w-9 items-center rounded-full px-0.5 transition-colors ${
+                    theme === 'dark' ? 'bg-accent' : 'bg-border-strong'
+                  }`}
+                >
+                  <span
+                    className={`size-4 rounded-full bg-white shadow transition-transform ${
+                      theme === 'dark' ? 'translate-x-4' : 'translate-x-0'
+                    }`}
+                  />
                 </span>
               </button>
 
@@ -241,7 +320,11 @@ export default function DashboardLayout() {
                 className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-danger transition-colors hover:bg-danger-soft"
               >
                 <svg viewBox="0 0 20 20" fill="currentColor" className="size-4 shrink-0">
-                  <path fillRule="evenodd" d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Zm13.03 4.97a.75.75 0 0 1 0 1.06l-1.5 1.5a.75.75 0 1 1-1.06-1.06l.22-.22H8.5a.75.75 0 0 1 0-1.5h5.19l-.22-.22a.75.75 0 1 1 1.06-1.06l1.5 1.5Z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Zm13.03 4.97a.75.75 0 0 1 0 1.06l-1.5 1.5a.75.75 0 1 1-1.06-1.06l.22-.22H8.5a.75.75 0 0 1 0-1.5h5.19l-.22-.22a.75.75 0 1 1 1.06-1.06l1.5 1.5Z"
+                    clipRule="evenodd"
+                  />
                 </svg>
                 Sign out
               </button>
@@ -258,10 +341,14 @@ export default function DashboardLayout() {
           >
             <AvatarInitials initials={profile?.avatarInitials ?? '??'} size="sm" />
             <div className="min-w-0 flex-1 text-left">
-              <p className="truncate text-xs font-semibold text-text">{profile?.name ?? 'Loading…'}</p>
-              <span className={`inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                isAdmin ? 'bg-accent/10 text-accent' : 'bg-surface-strong text-muted'
-              }`}>
+              <p className="truncate text-xs font-semibold text-text">
+                {profile?.name ?? 'Loading…'}
+              </p>
+              <span
+                className={`inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                  isAdmin ? 'bg-accent/10 text-accent' : 'bg-surface-strong text-muted'
+                }`}
+              >
                 {roleLabel}
               </span>
             </div>
@@ -272,7 +359,11 @@ export default function DashboardLayout() {
                 userMenuOpen ? 'rotate-180' : ''
               }`}
             >
-              <path fillRule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+              <path
+                fillRule="evenodd"
+                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                clipRule="evenodd"
+              />
             </svg>
           </button>
         </div>
@@ -283,7 +374,12 @@ export default function DashboardLayout() {
         <div className="flex items-center gap-3">
           <div className="flex size-7 items-center justify-center rounded-lg bg-accent">
             <svg viewBox="0 0 20 20" fill="white" className="size-3.5">
-              <path fillRule="evenodd" d="M3.25 3A2.25 2.25 0 0 0 1 5.25v9.5A2.25 2.25 0 0 0 3.25 17h13.5A2.25 2.25 0 0 0 19 14.75v-9.5A2.25 2.25 0 0 0 16.75 3H3.25ZM6.05 6a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-1.5 0V6.75A.75.75 0 0 1 6.05 6Zm.75 2.75a.75.75 0 0 0-1.5 0v4.01a.75.75 0 0 0 1.5 0V8.75ZM10 6a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5A.75.75 0 0 1 10 6Zm3.75.75a.75.75 0 0 0-1.5 0v5.5a.75.75 0 0 0 1.5 0v-5.5Z" clipRule="evenodd" /></svg>
+              <path
+                fillRule="evenodd"
+                d="M3.25 3A2.25 2.25 0 0 0 1 5.25v9.5A2.25 2.25 0 0 0 3.25 17h13.5A2.25 2.25 0 0 0 19 14.75v-9.5A2.25 2.25 0 0 0 16.75 3H3.25ZM6.05 6a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-1.5 0V6.75A.75.75 0 0 1 6.05 6Zm.75 2.75a.75.75 0 0 0-1.5 0v4.01a.75.75 0 0 0 1.5 0V8.75ZM10 6a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5A.75.75 0 0 1 10 6Zm3.75.75a.75.75 0 0 0-1.5 0v5.5a.75.75 0 0 0 1.5 0v-5.5Z"
+                clipRule="evenodd"
+              />
+            </svg>
           </div>
           <span className="text-sm font-bold text-text">Workspace</span>
         </div>
@@ -294,9 +390,17 @@ export default function DashboardLayout() {
           className="rounded-xl p-2 text-muted hover:bg-surface-strong hover:text-text"
         >
           {mobileNavOpen ? (
-            <svg viewBox="0 0 20 20" fill="currentColor" className="size-5"><path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" /></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" className="size-5">
+              <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+            </svg>
           ) : (
-            <svg viewBox="0 0 20 20" fill="currentColor" className="size-5"><path fillRule="evenodd" d="M2 4.75A.75.75 0 0 1 2.75 4h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 4.75Zm0 5A.75.75 0 0 1 2.75 9h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 9.75Zm0 5A.75.75 0 0 1 2.75 14h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 14.75Z" clipRule="evenodd" /></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" className="size-5">
+              <path
+                fillRule="evenodd"
+                d="M2 4.75A.75.75 0 0 1 2.75 4h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 4.75Zm0 5A.75.75 0 0 1 2.75 9h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 9.75Zm0 5A.75.75 0 0 1 2.75 14h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 14.75Z"
+                clipRule="evenodd"
+              />
+            </svg>
           )}
         </button>
       </div>
@@ -310,7 +414,7 @@ export default function DashboardLayout() {
           />
           <div className="fixed inset-y-0 left-0 z-40 w-64 border-r border-border bg-surface pt-14 lg:hidden">
             <nav className="space-y-0.5 overflow-y-auto p-3" aria-label="Dashboard sections">
-              {NAV_ITEMS.map((item) => (
+              {navItems.map((item) => (
                 <NavLink
                   key={item.to}
                   to={item.to}
@@ -334,10 +438,18 @@ export default function DashboardLayout() {
             </nav>
             <div className="border-t border-border p-3">
               <div className="flex gap-1">
-                <button type="button" onClick={toggleTheme} className="flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-muted hover:bg-surface-strong hover:text-text">
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-muted hover:bg-surface-strong hover:text-text"
+                >
                   {theme === 'dark' ? 'Light' : 'Dark'}
                 </button>
-                <button type="button" onClick={() => signOutUser()} className="flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-muted hover:bg-danger-soft hover:text-danger">
+                <button
+                  type="button"
+                  onClick={() => signOutUser()}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-muted hover:bg-danger-soft hover:text-danger"
+                >
                   Sign out
                 </button>
               </div>

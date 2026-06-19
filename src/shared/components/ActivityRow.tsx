@@ -18,9 +18,7 @@ export function ActivityRow({ entry, clientName, showEntityBadge }: ActivityRowP
         <p className="text-sm text-text">
           <span className="font-semibold">{entry.actorName}</span>{' '}
           <span className="text-muted">{entry.action}</span>
-          {clientName ? (
-            <span className="ml-1 text-xs text-muted/70">· {clientName}</span>
-          ) : null}
+          {clientName ? <span className="ml-1 text-xs text-muted/70">· {clientName}</span> : null}
         </p>
         <div className="mt-1 flex items-center gap-2">
           <span className="text-xs text-muted/60">{relativeTime(entry.timestamp)}</span>
